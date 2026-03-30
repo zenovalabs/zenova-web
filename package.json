@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "scripts": {
     "start": "sirv ./src public --cors --single --host 0.0.0.0 --port 8000",
-    "build": "mkdir -p dist && cp -r src/* dist/ && cp -r public/* dist/ 2>/dev/null || true"
+    "build": "mkdir -p dist && cp -r src/* dist/ && cp -r public/* dist/ 2>/dev/null || true && npm run minify",
+    "minify": "npx terser dist/script.js -o dist/script.js -c -m"
   },
   "devDependencies": {
-    "sirv-cli": "^3.0.1"
+    "sirv-cli": "^3.0.1",
+    "terser": "^5.46.1"
   }
 }

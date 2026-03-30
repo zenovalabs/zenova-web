@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Block bad bots
+User-agent: AhrefsBot
+User-agent: SemrushBot
+Disallow: /
