@@ -1,7 +1,66 @@
-# Vanilla JavaScript App
+# ZENOVA Labs - Cloud & Networking Platform
 
-[Azure Static Web Apps](https://docs.microsoft.com/azure/static-web-apps/overview) allows you to easily build JavaScript apps in minutes. Use this repo with the [quickstart](https://docs.microsoft.com/azure/static-web-apps/getting-started?tabs=vanilla-javascript) to build and customize a new static site.
+Official website for **ZENOVA Labs, s.r.o.** - specialists in cloud infrastructure, networking, and automation.
 
-This repo is used as a starter for a _very basic_ HTML web application using no front-end frameworks.
+## 🚀 About
 
-This repo has a dev container. This means if you open it inside a [GitHub Codespace](https://github.com/features/codespaces), or using [VS Code with the remote containers extension](https://code.visualstudio.com/docs/remote/containers), it will be opened inside a container with all the dependencies already installed.
+ZENOVA Labs provides:
+- **Cloud Solutions**: Microsoft 365, cloud-native platforms
+- **Networking**: Modern network architectures and solutions
+- **Automation**: Infrastructure automation and CI/CD
+- **Consulting**: Cloud migrations and audit services
+
+## 📦 Tech Stack
+
+- **Frontend**: Vanilla JavaScript (no frameworks)
+- **Hosting**: Azure Static Web Apps
+- **Build**: Node.js with Sirv dev server
+- **Languages**: Bilingual (SK/EN)
+
+## 🛠️ Development
+
+This project uses a dev container for consistent development environment.
+
+### Quick Start
+
+```bash
+# Install dependencies
+npm ci
+
+# Start development server (http://localhost:8000)
+npm start
+
+# Build for production
+npm run build
+```
+
+### Dev Container
+
+Open in:
+- [GitHub Codespaces](https://github.com/features/codespaces)
+- VS Code with [Remote Containers extension](https://code.visualstudio.com/docs/remote/containers)
+
+## 📂 Project Structure
+
+```
+src/
+├── index.html          # Main markup
+├── script.js          # Navigation, certificates, language switching
+├── styles.css         # Responsive design
+└── assets/
+    ├── zenova.png
+    └── certificates/  # Certificate gallery
+        ├── manifest.json
+        └── ZENOVA-Labs-Cert*.webp
+
+.devcontainer/         # Dev container config
+.github/workflows/     # Azure Static Web Apps CI/CD
+```
+
+## 🌐 Deployment
+
+Automatically deployed to Azure Static Web Apps on push to `main` branch via GitHub Actions.
+
+## 📋 License
+
+© ZENOVA Labs, s.r.o.

@@ -2,7 +2,8 @@
   "name": "vanilla-basic",
   "version": "1.0.0",
   "scripts": {
-    "start": "sirv ./src public --cors --single --no-clear --port 8000"
+    "start": "sirv ./src public --cors --single --host 0.0.0.0 --port 8000",
+    "build": "mkdir -p dist && cp -r src/* dist/ && cp -r public/* dist/ 2>/dev/null || true"
   },
   "devDependencies": {
     "sirv-cli": "^3.0.1"
