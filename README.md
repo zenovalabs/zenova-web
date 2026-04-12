@@ -15,9 +15,9 @@ The target repository story is broader than a simple static site:
 - SEO-driven content structure
 - bilingual routing model with `zenova.sk` as the canonical domain
 - Azure Static Web Apps hosting
-- Azure Static Web Apps default-domain and bilingual path strategy
+- Azure Static Web Apps bilingual path strategy with enterprise-grade edge direction
 - Infrastructure as Code with Bicep
-- GitHub-based CI/CD for test and production environments
+- GitHub-based CI/CD for staged test and production environments
 
 ## Service Direction
 
@@ -65,8 +65,9 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for working rules.
 ## Current Stack
 
 - Frontend: Vanilla HTML, CSS, and JavaScript
-- Hosting: Azure Static Web Apps
-- Domain strategy: SWA default domain with in-app locale routing on `/` and `/en/`
+- Hosting: Azure Static Web Apps Standard
+- Edge direction: enterprise-grade edge on the Standard plan
+- Domain strategy: Azure-managed hostname first, with in-app locale routing on `/` and `/en/`
 - Build: Node.js
 - Local development: dev container compatible
 
@@ -118,8 +119,15 @@ Delivery-ready workflow foundation now includes:
 - `ci-validation.yml` for build, content, infra, and workflow validation
 - `preview-pr.yml` for Azure Static Web Apps preview environments
 - `infra-whatif.yml` for safe Azure what-if checks
-- `deploy-test.yml` for the stable test environment
+- `deploy-test.yml` for a staged test bootstrap and stable test environment
 - `deploy-prod.yml` for controlled production deploys
+
+Current bootstrap story:
+
+- phase 1 creates or reconciles the resource group and Static Web App foundation
+- phase 1 does not require `AZURE_STATIC_WEB_APPS_API_TOKEN`
+- phase 2 publishes `dist/` into the existing Static Web App after the token is added
+- PR previews become deploy-capable after phase 2 has completed at least once
 
 ## Project Structure
 
@@ -135,7 +143,7 @@ docs/               public project and architecture docs
 The repository is currently transitioning from a single-page static site into a more complete public project with:
 
 - clearer public documentation
-- Azure infrastructure planning
+- Azure infrastructure planning and staged bootstrap delivery
 - GitHub collaboration scaffolding
 - future test and production environment separation
 

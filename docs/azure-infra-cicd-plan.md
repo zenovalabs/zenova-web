@@ -6,7 +6,7 @@ Aktualny implementovany environment model je zhrnuty aj samostatne:
 
 - [Azure environments and delivery model](./azure-environments-delivery-model.md)
 
-Finalne rozhodovanie medzi `SWA only`, `SWA + Azure Front Door` a `SWA + Azure Application Gateway` je zhrnute aj v samostatnom dokumente:
+Finalne rozhodovanie medzi `SWA Standard`, `SWA + enterprise-grade edge`, `SWA + Azure Front Door` a `SWA + Azure Application Gateway` je zhrnute aj v samostatnom dokumente:
 
 - [Azure edge decision record](./azure-edge-decision.md)
 
@@ -22,14 +22,16 @@ Odporucany cielovy stav:
 - `zenova.sk/en/...` bude anglicka verzia na tej istej cielovej domene
 - `zenovalabs.*` budu pripojene ako dalsie custom domeny a SWA ich presmeruje na default domain `zenova.sk`
 - hosting webu bude na Azure Static Web Apps Standard
+- enterprise-grade edge bude sucast cieloveho modelu
 - locale logika bude riesena v aplikacii na webe, nie na urovni domeny alebo edge vrstvy
 - Infrastructure as Code bude v Bicep
 - CI/CD bude oddelene pre `ci`, `test` a `prod`
 
 Po dodatocnom prehodnoteni nakladov a zlozitosti:
 
-- Azure Application Gateway nie je pre tento konkretny staticky web odporucana lacnejsia nahrada za Front Door
-- pre tento projekt je cielovy model `Static Web Apps Standard bez edge vrstvy`
+- Azure Application Gateway nie je pre tento konkretny staticky web odporucana alternativa
+- Azure Front Door zostava samostatna edge platforma pre buduce rozsirenia
+- pre tento projekt je cielovy model `Static Web Apps Standard s enterprise-grade edge`
 
 ## Stav dnes
 
@@ -66,6 +68,13 @@ Aktualny verejny foundation v repozitari:
   - `.github/workflows/infra-whatif.yml`
   - `.github/workflows/deploy-test.yml`
   - `.github/workflows/deploy-prod.yml`
+
+Aktualny bootstrap model:
+
+- `deploy-test.yml` je staged workflow
+- phase 1 vytvori RG + SWA + edge-ready foundation bez SWA tokenu
+- phase 2 nasadi `dist/` po doplneni `AZURE_STATIC_WEB_APPS_API_TOKEN`
+- `preview-pr.yml` sa aktivuje az po phase 2
 
 ## Rozhodnutie o platforme
 
@@ -248,7 +257,7 @@ Toto nie je plna nahrada pre:
 - test canonical host spravania
 - test spravania pri default-domain redirecte na produkcii
 
-## Routing a locale model bez edge vrstvy
+## Routing a locale model s enterprise edge smerom
 
 Odporucany model pre produkciu:
 
@@ -296,8 +305,8 @@ To vsak nestaci pre:
 
 Preto:
 
-- pre aktualny model je `SWA Standard + default domain` dostacujuce riesenie
-- `Front Door` dava zmysel az vtedy, ak by sme neskor chceli zaviesť jemnejsiu host-based jazykovu alebo path-based redirect logiku
+- pre aktualny model je `SWA Standard + enterprise-grade edge` dostacujuce riesenie
+- `Front Door` dava zmysel az vtedy, ak by sme neskor chceli zaviesť jemnejsiu host-based jazykovu alebo path-based redirect logiku mimo moznosti SWA modelu
 
 ## Front Door navrh
 
@@ -539,12 +548,12 @@ Prakticky ciel:
 
 ## Prakticke odporucanie k nakladom
 
-Ak chces znizit naklady, isiel by som tymto poradi:
+Ak chces drzat naklady pod kontrolou, isiel by som tymto poradi:
 
-1. pouzit iba SWA Standard v produkcii
-2. test prostredie spravit ako samostatne SWA bez edge vrstvy
-3. PR preview pouzit natyvne cez SWA
-4. edge vrstvu pridat az neskor, len ak ju realne potrebujes
+1. pouzit `SWA Standard + enterprise-grade edge` ako cielovy model
+2. test prostredie bootstrapovat staged flowom cez `deploy-test.yml`
+3. PR preview pouzit natyvne cez SWA po doplneni tokenu v phase 2
+4. samostatny Front Door stack pridat az neskor, len ak ho realne potrebujes
 
 Toto je podla mna najrozumnejsi kompromis medzi:
 

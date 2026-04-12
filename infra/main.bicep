@@ -24,6 +24,9 @@ param repositoryBranch string = 'main'
 @description('Enable Azure Static Web Apps staging environments for preview URLs.')
 param enableStagingEnvironments bool = true
 
+@description('Enable enterprise-grade edge on the Static Web App resource.')
+param enableEnterpriseGradeEdge bool = true
+
 @description('When true, optional placeholder DNS zones are deployed into the same resource group.')
 param enableDnsPlaceholders bool = false
 
@@ -37,7 +40,7 @@ var defaultTags = {
   application: 'zenova.sk'
   environment: environmentName
   managedBy: 'bicep'
-  stack: 'azure-static-web-apps-standard'
+  stack: enableEnterpriseGradeEdge ? 'azure-static-web-apps-standard-enterprise-edge' : 'azure-static-web-apps-standard'
   project: 'zenova-web'
 }
 
@@ -61,6 +64,7 @@ module staticWebApp 'modules/static-web-app.bicep' = {
     repositoryUrl: repositoryUrl
     repositoryBranch: repositoryBranch
     stagingEnvironmentPolicy: enableStagingEnvironments ? 'Enabled' : 'Disabled'
+    enterpriseGradeCdnStatus: enableEnterpriseGradeEdge ? 'Enabled' : 'Disabled'
     tags: tags
   }
   dependsOn: [
@@ -85,5 +89,8 @@ output resourceGroupName string = resourceGroupName
 output staticSiteName string = staticWebApp.outputs.name
 output staticSiteDefaultHostname string = staticWebApp.outputs.defaultHostname
 output stagingEnvironmentPolicy string = staticWebApp.outputs.stagingEnvironmentPolicy
+output enterpriseGradeEdgeEnabled bool = enableEnterpriseGradeEdge
+output enterpriseGradeEdgeStatus string = staticWebApp.outputs.enterpriseGradeCdnStatus
+output bootstrapPhaseTwoReady bool = !empty(staticWebApp.outputs.defaultHostname)
 output dnsPlaceholdersEnabled bool = enableDnsPlaceholders
 output dnsZoneNames array = enableDnsPlaceholders ? dnsZoneNames : []

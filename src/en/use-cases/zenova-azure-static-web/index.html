@@ -131,12 +131,12 @@
           <article class="metric-showcase-card">
             <h3>PR preview</h3>
             <strong class="metric-showcase-value">SWA preview</strong>
-            <p>Pull-request review layer powered by Azure Static Web Apps preview environments for content and visual feedback.</p>
+            <p>Pull-request review layer powered by Azure Static Web Apps preview environments, activated after bootstrap phase 2.</p>
           </article>
           <article class="metric-showcase-card">
             <h3>Test</h3>
-            <strong class="metric-showcase-value">OIDC + Bicep</strong>
-            <p>A stable non-production environment through `deploy-test.yml`, public parameter files and the GitHub Environment `test`.</p>
+            <strong class="metric-showcase-value">OIDC + staged bootstrap</strong>
+            <p>A stable non-production environment through `deploy-test.yml`, public parameter files, enterprise edge direction and the GitHub Environment `test`.</p>
           </article>
           <article class="metric-showcase-card">
             <h3>Production</h3>
@@ -159,9 +159,9 @@
         </article>
         <article class="card detail-card">
           <h3>Proposed solution</h3>
-          <p>The website is built as a static multi-page frontend with separate Slovak and English branches, hosted on Azure Static Web Apps Standard. Architectural decisions are documented directly in the repository and the infrastructure direction is prepared for Bicep and further CI/CD expansion.</p>
+          <p>The website is built as a static multi-page frontend with separate Slovak and English branches, hosted on Azure Static Web Apps Standard with an enterprise edge direction. Architectural decisions are documented directly in the repository and the infrastructure direction is prepared for staged Bicep bootstrap and further CI/CD expansion.</p>
           <ul class="detail-list">
-            <li>Azure Static Web Apps Standard as a practical production foundation</li>
+            <li>Azure Static Web Apps Standard with enterprise edge direction as a practical production foundation</li>
             <li>a multi-page model instead of one overloaded landing page</li>
             <li>SEO-friendly URL branches via `/` and `/en/`</li>
             <li>documented decisions for edge and IaC direction</li>
@@ -173,11 +173,11 @@
       <div class="container split-grid">
         <article class="card detail-card">
           <h3>Delivery model in practice</h3>
-          <p>The repository already shows a public delivery foundation without exposing secrets. The Bicep foundation, workflows and documentation live in the repo, while environment variables, OIDC federation and SWA deployment tokens stay outside it.</p>
+          <p>The repository already shows a public delivery foundation without exposing secrets. The Bicep foundation, workflows and documentation live in the repo, while environment variables, OIDC federation and SWA deployment tokens stay outside it and the first bootstrap is intentionally staged.</p>
           <ul class="detail-list">
             <li>subscription-level `infra/main.bicep` with public `test` and `prod` parameter files</li>
             <li>`ci-validation`, `infra-whatif`, `deploy-test`, `deploy-prod` and `preview-pr` workflows</li>
-            <li>a clean separation between automated repo logic and manual environment setup outside the repo</li>
+            <li>a clean separation between phase 1 infra bootstrap, phase 2 app deploy and manual environment setup outside the repo</li>
           </ul>
         </article>
         <article class="card detail-card">

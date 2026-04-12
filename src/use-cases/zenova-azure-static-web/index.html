@@ -131,12 +131,12 @@
           <article class="metric-showcase-card">
             <h3>PR preview</h3>
             <strong class="metric-showcase-value">SWA preview</strong>
-            <p>Pull request vrstva pre obsahový a vizuálny review cez Azure Static Web Apps preview environments.</p>
+            <p>Pull request vrstva pre obsahový a vizuálny review cez Azure Static Web Apps preview environments, aktivovaná po bootstrap phase 2.</p>
           </article>
           <article class="metric-showcase-card">
             <h3>Test</h3>
-            <strong class="metric-showcase-value">OIDC + Bicep</strong>
-            <p>Stabilné non-prod prostredie cez `deploy-test.yml`, verejné parametre a GitHub Environment `test`.</p>
+            <strong class="metric-showcase-value">OIDC + staged bootstrap</strong>
+            <p>Stabilné non-prod prostredie cez `deploy-test.yml`, verejné parametre, enterprise edge smer a GitHub Environment `test`.</p>
           </article>
           <article class="metric-showcase-card">
             <h3>Production</h3>
@@ -159,9 +159,9 @@
         </article>
         <article class="card detail-card">
           <h3>Návrh riešenia</h3>
-          <p>Web je postavený ako statický viacstránkový frontend so samostatnou SK a EN vetvou, s hostingom na Azure Static Web Apps Standard. Architektonické rozhodnutia sú popísané priamo v repozitári a infra smer je pripravený na Bicep a ďalšie CI/CD rozšírenie.</p>
+          <p>Web je postavený ako statický viacstránkový frontend so samostatnou SK a EN vetvou, s hostingom na Azure Static Web Apps Standard a enterprise edge smerom. Architektonické rozhodnutia sú popísané priamo v repozitári a infra smer je pripravený na staged bootstrap v Bicep a ďalšie CI/CD rozšírenie.</p>
           <ul class="detail-list">
-            <li>Azure Static Web Apps Standard ako rozumný produkčný základ</li>
+            <li>Azure Static Web Apps Standard s enterprise edge smerom ako produkčný základ</li>
             <li>viacstránkový model namiesto jednej preťaženej landing page</li>
             <li>SEO-friendly URL vetvy cez `/` a `/en/`</li>
             <li>dokumentované rozhodnutia pre edge a IaC vrstvu</li>
@@ -173,11 +173,11 @@
       <div class="container split-grid">
         <article class="card detail-card">
           <h3>Delivery model v praxi</h3>
-          <p>Repo už dnes ukazuje verejnú kostru delivery modelu bez toho, aby zverejňoval secrets. Bicep foundation, workflowy a dokumentácia sú v repozitári, ale environment variables, OIDC a SWA tokeny ostávajú mimo neho.</p>
+          <p>Repo už dnes ukazuje verejnú kostru delivery modelu bez toho, aby zverejňoval secrets. Bicep foundation, workflowy a dokumentácia sú v repozitári, ale environment variables, OIDC a SWA tokeny ostávajú mimo neho a prvý bootstrap je zámerne staged.</p>
           <ul class="detail-list">
             <li>subscription-level `infra/main.bicep` a verejné `test` / `prod` parametre</li>
             <li>`ci-validation`, `infra-whatif`, `deploy-test`, `deploy-prod` a `preview-pr` workflowy</li>
-            <li>jasné rozdelenie medzi automatizovanou vrstvou v repo a manuálnym environment setupom mimo repo</li>
+            <li>jasné rozdelenie medzi phase 1 infra bootstrapom, phase 2 app deployom a manuálnym environment setupom mimo repo</li>
           </ul>
         </article>
         <article class="card detail-card">
