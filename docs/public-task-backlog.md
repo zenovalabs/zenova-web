@@ -20,6 +20,7 @@ Do not use it for:
 - Add a detailed Azure or public cloud landing zone use case
 - Add a detailed networking and security use case beyond Meraki SD-WAN
 - Apply the new shared use-case template to older detail pages where it improves consistency
+- Reintroduce the `Partners` and `Certifications` sections from the `baseline-original-site` one-page version into the current site information architecture
 
 ## SEO and Frontend
 
