@@ -1,9 +1,9 @@
 using '../main.bicep'
 
 param environmentName = 'test'
-param resourceGroupName = 'rg-zenova-web-test'
-param resourceGroupLocation = 'Sweden Central'
-param staticSiteLocation = 'Central US'
+param resourceGroupName = 'zenova-web-test-rg'
+param resourceGroupLocation = 'Austria East'
+param staticSiteLocation = 'Austria East'
 param staticSiteName = 'swa-zenova-web-test'
 param repositoryUrl = 'https://github.com/zenovalabs/zenova-web'
 param repositoryBranch = 'main'
