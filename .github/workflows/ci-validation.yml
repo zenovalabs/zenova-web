@@ -1,0 +1,66 @@
+name: CI Validation
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/**"
+      - "infra/**"
+      - "package.json"
+      - "package-lock.json"
+      - "scripts/**"
+      - "src/**"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/**"
+      - "infra/**"
+      - "package.json"
+      - "package-lock.json"
+      - "scripts/**"
+      - "src/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-validation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-static-site:
+    runs-on: ubuntu-latest
+    name: Validate Static Site
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Setup Bicep CLI
+        uses: Azure/setup-bicep@v2
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build static site
+        run: npm run build
+
+      - name: Validate static site
+        run: npm run validate:site
+
+      - name: Validate built output links
+        run: npm run validate:dist
+
+      - name: Validate public infra foundation
+        run: npm run validate:infra
+
+      - name: Validate GitHub workflows
+        run: npm run validate:workflows

@@ -1,0 +1,93 @@
+name: Infra What-If
+
+on:
+  pull_request:
+    paths:
+      - "infra/**"
+      - ".github/workflows/infra-whatif.yml"
+      - "docs/azure-*.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: infra-whatif-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-infrastructure:
+    runs-on: ubuntu-latest
+    name: Validate Bicep Foundation
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Setup Bicep CLI
+        uses: Azure/setup-bicep@v2
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate public infra foundation
+        run: npm run validate:infra
+
+  what-if-test:
+    runs-on: ubuntu-latest
+    name: Azure What-If (test)
+    needs: validate-infrastructure
+    environment: test
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bicep CLI
+        uses: Azure/setup-bicep@v2
+
+      - name: Evaluate Azure what-if prerequisites
+        id: gate
+        env:
+          AZURE_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
+          AZURE_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+          AZURE_DEPLOYMENT_LOCATION: ${{ vars.AZURE_DEPLOYMENT_LOCATION }}
+        run: |
+          if [ -n "$AZURE_CLIENT_ID" ] && [ -n "$AZURE_TENANT_ID" ] && [ -n "$AZURE_SUBSCRIPTION_ID" ] && [ -n "$AZURE_DEPLOYMENT_LOCATION" ]; then
+            echo "can_run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "can_run=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Explain skipped what-if
+        if: steps.gate.outputs.can_run != 'true'
+        run: |
+          echo "Azure what-if skipped because test environment variables are not configured."
+          echo "Expected GitHub Environment 'test' vars: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_SUBSCRIPTION_ID, AZURE_DEPLOYMENT_LOCATION."
+
+      - name: Azure login with OIDC
+        if: steps.gate.outputs.can_run == 'true'
+        uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Run subscription what-if for test
+        if: steps.gate.outputs.can_run == 'true'
+        run: |
+          az deployment sub what-if \
+            --name "zenova-web-test-whatif-${{ github.run_id }}" \
+            --location "${{ vars.AZURE_DEPLOYMENT_LOCATION }}" \
+            --template-file infra/main.bicep \
+            --parameters infra/params/test.bicepparam

@@ -96,6 +96,34 @@ Recommended baseline validation for this repo:
 - `npm run validate:infra`
 - `npm run validate:workflows`
 
+## Workflow and Release Hygiene
+
+Keep the repository workflow layer intentional and small.
+
+Current curated workflow set:
+
+- `ci-validation.yml`
+- `preview-pr.yml`
+- `infra-whatif.yml`
+- `deploy-test.yml`
+- `deploy-prod.yml`
+
+Rules:
+
+- remove Azure-generated default SWA workflows once the curated workflow set exists
+- keep production deploys manual
+- allow test and production deploys only from `main`
+- do not introduce `pull_request_target` workflows in this public repository
+- prefer clean skip behavior when Azure environment prerequisites are missing
+
+Recommended release path:
+
+1. Open a PR and let CI validation run.
+2. Review the PR preview if the SWA preview token is configured.
+3. Merge to `main` only when the branch is coherent for public review and release.
+4. Let `deploy-test.yml` update the stable non-production environment.
+5. Trigger `deploy-prod.yml` manually from `main` when ready.
+
 ## Local Commit Strategy
 
 Because this repository is public, it is acceptable and recommended to keep work in progress local until it is ready for public review.
