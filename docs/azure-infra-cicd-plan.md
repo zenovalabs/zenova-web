@@ -75,6 +75,7 @@ Aktualny bootstrap model:
 - phase 1 vytvori RG + SWA + edge-ready foundation bez SWA tokenu
 - phase 2 nasadi `dist/` po doplneni `AZURE_STATIC_WEB_APPS_API_TOKEN`
 - `preview-pr.yml` sa aktivuje az po phase 2
+- `deploy-prod.yml` uz pouziva rovnaky staged model pre produkciu
 
 ## Rozhodnutie o platforme
 
@@ -490,9 +491,11 @@ Kroky:
 - `npm ci`
 - `npm run build`
 - `npm run validate:site`
-- deploy Bicep parametrov pre prod
-- deploy app do prod SWA
-- ak chyba environment konfiguracia, workflow sa korektne preskoci
+- `phase 1`: deploy Bicep parametrov pre prod bez SWA tokenu
+- vypis SWA mena, hostname a edge statusu
+- `phase 2`: deploy app do prod SWA po doplneni `AZURE_STATIC_WEB_APPS_API_TOKEN`
+- ak chyba OIDC environment konfiguracia, workflow sa korektne preskoci
+- ak chyba SWA token, workflow dokonci phase 1 a vypise dalsie kroky pre domain onboarding a phase 2
 
 Ciel:
 
@@ -518,6 +521,7 @@ Odporucanie:
 - nepouzivat dlhodobe deployment tokeny ako hlavny model pre infra deploy
 - pre Azure login pouzit OIDC a federated credentials
 - SWA deployment token moze ostat ako prechodne riesenie pre app deploy, ale dlhodobo je lepsie smerovat k menej manualnemu setupu
+- pre `prod` aj `test` ma byt token potrebny az v phase 2, nie pri infra bootstrape
 
 ## Build prostredie
 
@@ -543,8 +547,9 @@ Prakticky ciel:
 5. doplnit `preview-pr.yml`, `infra-whatif.yml`, `deploy-test.yml` a `deploy-prod.yml`
 6. nakonfigurovat GitHub Environments `test` a `prod`
 7. zapojit OIDC pre Azure login a SWA deployment tokeny mimo repo
-8. zapojit SWA default domain a domeny
-9. doplnit smoke testy URL, buildu a locale spravania
+8. pre `test` a `prod` spustit phase 1 bootstrap a ziskat SWA deployment tokeny
+9. zapojit SWA default domain a domeny pre produkciu
+10. doplnit smoke testy URL, buildu, default-domain redirectu a locale spravania
 
 ## Prakticke odporucanie k nakladom
 
