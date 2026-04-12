@@ -68,9 +68,16 @@ Current public scope:
 
 - subscription-level orchestration via `infra/main.bicep`
 - resource group creation
-- Azure Static Web Apps Standard deployment
+- Azure Static Web Apps Standard deployment with enterprise-grade edge direction
 - optional DNS zone placeholders
 - public-safe parameter files for `test` and `prod`
+
+Bootstrap contract:
+
+1. phase 1 creates or reconciles the resource group and Static Web App foundation
+2. phase 1 can run without `AZURE_STATIC_WEB_APPS_API_TOKEN`
+3. phase 2 publishes `dist/` into the existing Static Web App after the token is added to the GitHub Environment
+4. PR preview environments stay intentionally inactive until phase 2 has completed at least once
 
 Validation entrypoints:
 

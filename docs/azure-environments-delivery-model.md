@@ -70,6 +70,7 @@ Practical note:
 
 - preview environments are useful for UI review
 - they are not a substitute for stable `test` or `prod`
+- they stay intentionally inactive until `deploy-test.yml` phase 2 has run at least once with a valid SWA token
 
 ## 3. Test
 
@@ -90,13 +91,15 @@ How it runs:
 Domain behavior:
 
 - expected primary hostname is the Azure Static Web Apps default hostname
+- enterprise-grade edge is enabled as part of the SWA direction, but custom test DNS is not required for the first working iteration
 - custom domains are optional and not required for the first public foundation
 
 Automation level:
 
 - `infra-whatif` can run on pull requests or manually
 - `deploy-test` runs on `main` pushes and `workflow_dispatch`
-- Azure deployment happens only if GitHub Environment `test` is configured
+- `deploy-test` phase 1 creates RG + SWA + edge-ready foundation with OIDC only
+- `deploy-test` phase 2 uploads the built site after the SWA token is configured
 
 Required GitHub Environment `test` values:
 
@@ -104,6 +107,16 @@ Required GitHub Environment `test` values:
 - variable `AZURE_TENANT_ID`
 - variable `AZURE_SUBSCRIPTION_ID`
 - variable `AZURE_DEPLOYMENT_LOCATION`
+
+Phase 1 requires:
+
+- variable `AZURE_CLIENT_ID`
+- variable `AZURE_TENANT_ID`
+- variable `AZURE_SUBSCRIPTION_ID`
+- variable `AZURE_DEPLOYMENT_LOCATION`
+
+Phase 2 additionally requires:
+
 - secret `AZURE_STATIC_WEB_APPS_API_TOKEN`
 
 ## 4. Production
@@ -155,10 +168,11 @@ The repository should not keep the default Azure-generated Static Web Apps workf
 Release path:
 
 1. Open a pull request and let `ci-validation.yml` run.
-2. Use `preview-pr.yml` for temporary UI review when the SWA token is configured.
-3. Merge to `main` only after CI is green and the change is coherent for a public repo.
-4. Let `deploy-test.yml` handle the stable non-production deployment from `main`.
-5. Run `deploy-prod.yml` manually from `main` after the test path is acceptable.
+2. Merge to `main` only after CI is green and the change is coherent for a public repo.
+3. Let `deploy-test.yml` create the test infrastructure foundation from `main`.
+4. Add the SWA deployment token to GitHub Environment `test` and rerun `deploy-test.yml` for phase 2.
+5. Use `preview-pr.yml` for temporary UI review after the token-backed deploy path is active.
+6. Run `deploy-prod.yml` manually from `main` after the test path is acceptable.
 
 Hygiene rules:
 
@@ -178,14 +192,15 @@ Automated in repo:
 - public Bicep validation
 - workflow YAML validation
 - optional Azure what-if
-- optional test and production deployment
+- staged test bootstrap and deployment
+- optional production deployment
 
 Manual outside repo:
 
 - GitHub Environment creation
 - OIDC federation setup in Azure
 - Azure subscription and tenant wiring
-- SWA deployment token creation
+- SWA deployment token creation after phase 1 has created the app
 - final custom-domain onboarding and verification
 
 ## Public-Safe Delivery Story
@@ -198,6 +213,7 @@ That means:
 - Bicep foundation is committed
 - parameter files are committed as placeholders
 - environment variables and secrets stay outside the repo
+- first-time bootstrap is staged rather than one-shot
 
 This is the key difference between:
 

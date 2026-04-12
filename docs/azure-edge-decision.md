@@ -13,8 +13,9 @@ The goal is to keep the decision public, understandable, and reusable as part of
 For the current stage of `zenova.sk`, the chosen direction is:
 
 - `Azure Static Web Apps Standard`
-- `zenova.sk` configured as the default domain
-- additional custom domains redirected to the default domain by SWA
+- `enterprise-grade edge` enabled on the Standard plan
+- Azure-managed hostname accepted for the first working test bootstrap
+- `zenova.sk` configured as the default domain in the production path
 - English content served under `/en/`
 - lightweight browser-based locale redirect only on the root entry
 
@@ -25,17 +26,17 @@ This was chosen because the site is currently:
 - not dependent on complex edge routing
 - cost-sensitive
 
-For this level of complexity, adding a dedicated Azure edge layer would be technically possible but economically disproportionate.
+For this level of complexity, a separate ingress stack such as Application Gateway would be disproportionate, but the built-in enterprise edge path on SWA Standard is now justified by the public architecture goal.
 
 Commercially, the evaluated staging path was:
 
 - consider `SWA Free` only as an early low-cost option
 - choose `SWA Standard` once real production posture and multi-domain behavior matter
-- add enterprise-grade edge later only if routing or public architecture needs justify it
+- add enterprise-grade edge once the repository needs to demonstrate a fuller Azure web delivery story
 
 Final current choice:
 
-- `SWA Standard`
+- `SWA Standard + enterprise-grade edge`
 
 Reason:
 
@@ -44,7 +45,7 @@ Reason:
 
 ## Evaluated Options
 
-### Option 1: SWA only
+### Option 1: SWA Standard without enterprise-grade edge
 
 Target model:
 
@@ -213,31 +214,31 @@ Target model:
 - added complexity without enough current business value
 - risk of over-engineering for a site that does not yet need this level of ingress control
 
-## Why We Chose SWA Only
+## Why We Chose SWA Standard with Enterprise Grade Edge
 
-The decision for `SWA only` was made because it matches the current shape of the project better than the edge-based alternatives.
+The decision for `SWA Standard + enterprise-grade edge` was made because it gives the repository a stronger public Azure delivery posture without introducing a separate ingress platform.
 
 Main reasons:
 
-- this is currently a simple static regional website
-- keeping the architecture lean is more valuable than adding infrastructure for future hypotheticals
-- cost matters more than advanced ingress elegance at this stage
+- this is still a small static website
+- the repo now needs to show a fuller Azure delivery story, not only the minimal hosting shape
+- enterprise-grade edge can be enabled within the SWA model without moving to a separate Front Door or Application Gateway stack
 - the path-based bilingual structure `/` and `/en/` is enough for SEO and for user navigation
-- the repository should showcase good engineering judgment, not unnecessary Azure complexity
-- the hosting model gives us a low-friction upgrade path from `Free` to `Standard`, and later from `Standard` to `Standard + enterprise-grade edge`
-- the default-domain behavior in SWA already gives enough canonical-domain consolidation for this phase
+- the repository should still avoid unnecessary Azure complexity
+- the hosting model keeps a clean line from `Standard` to `Standard + enterprise-grade edge`
+- the first bootstrap can stay on Azure-managed hostnames before custom-domain onboarding
 
 In other words:
 
-- `Azure Front Door` is technically strong, but too expensive for the current size and needs of the site
+- `Azure Front Door` is technically strong, but still heavier than needed for the current site
 - `Azure Application Gateway` is technically possible, but not compelling enough for this use case
-- `Azure Static Web Apps only` is the best current balance of cost, simplicity, and maintainability
+- `Azure Static Web Apps Standard + enterprise-grade edge` is now the best balance of public architecture value, cost, and maintainability
 
 More specifically:
 
 - `SWA Free` was attractive for the earliest phase, but not sufficient for the intended domain inventory
-- `SWA Standard` is the current chosen plan because it fits the target domain setup and production posture
-- optional enterprise-grade edge can be introduced later without replatforming the site
+- `SWA Standard` remains the hosting foundation because it fits the target domain setup and production posture
+- `enterprise-grade edge` is now part of the chosen direction instead of a later optional note
 
 ## Known Risks of SWA Only
 
@@ -287,8 +288,8 @@ This is important for the repository story:
 
 If the site later needs stronger domain routing or a more advanced public Azure architecture, the recommended progression is:
 
-1. keep `SWA only` while the site remains simple and regional
-2. add `Azure Front Door` if multi-domain canonical routing becomes operationally important
+1. keep `SWA Standard + enterprise-grade edge` as the default model
+2. add `Azure Front Door` if multi-domain canonical routing becomes operationally important beyond the SWA model
 3. consider `Azure Application Gateway` only if there is a specific regional ingress use case that justifies it
 
 ## Implementation Note

@@ -31,8 +31,9 @@ param provider string = 'GitHub'
 @description('Allow config file updates from connected workflows.')
 param allowConfigFileUpdates bool = true
 
-@description('Enterprise-grade CDN status. Kept disabled in the current SWA-only model.')
+@description('Enterprise-grade edge status for Azure Static Web Apps.')
 @allowed([
+  'Enabled'
   'Disabled'
 ])
 param enterpriseGradeCdnStatus string = 'Disabled'
@@ -62,3 +63,4 @@ output id string = staticSite.id
 output name string = staticSite.name
 output defaultHostname string = staticSite.properties.defaultHostname
 output stagingEnvironmentPolicy string = staticSite.properties.stagingEnvironmentPolicy
+output enterpriseGradeCdnStatus string = staticSite.properties.enterpriseGradeCdnStatus
