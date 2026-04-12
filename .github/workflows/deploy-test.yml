@@ -114,13 +114,40 @@ jobs:
         if: steps.release_ref.outputs.can_release == 'true' && steps.infra_gate.outputs.can_bootstrap == 'true'
         id: infra_deploy
         run: |
-          az deployment sub create \
-            --name "zenova-web-test-${{ github.run_id }}" \
-            --location "${{ vars.AZURE_DEPLOYMENT_LOCATION }}" \
-            --template-file infra/main.bicep \
-            --parameters infra/params/test.bicepparam \
-            --query properties.outputs \
-            --output json > /tmp/zenova-test-outputs.json
+          ATTEMPT=1
+          MAX_ATTEMPTS=6
+
+          while true; do
+            set +e
+            DEPLOY_OUTPUT="$(az deployment sub create \
+              --name "zenova-web-test-${{ github.run_id }}" \
+              --location "${{ vars.AZURE_DEPLOYMENT_LOCATION }}" \
+              --template-file infra/main.bicep \
+              --parameters infra/params/test.bicepparam \
+              --query properties.outputs \
+              --output json 2>&1)"
+            DEPLOY_EXIT=$?
+            set -e
+
+            if [ $DEPLOY_EXIT -eq 0 ]; then
+              printf '%s\n' "$DEPLOY_OUTPUT" > /tmp/zenova-test-outputs.json
+              break
+            fi
+
+            if printf '%s\n' "$DEPLOY_OUTPUT" | grep -q "A create or update operation is currently in progress for the static web app"; then
+              if [ $ATTEMPT -ge $MAX_ATTEMPTS ]; then
+                printf '%s\n' "$DEPLOY_OUTPUT"
+                exit $DEPLOY_EXIT
+              fi
+
+              echo "Static Web App update is still in progress. Waiting before retry $((ATTEMPT + 1))/$MAX_ATTEMPTS..."
+              ATTEMPT=$((ATTEMPT + 1))
+              sleep 60
+            else
+              printf '%s\n' "$DEPLOY_OUTPUT"
+              exit $DEPLOY_EXIT
+            fi
+          done
 
           STATIC_SITE_NAME="$(jq -r '.staticSiteName.value' /tmp/zenova-test-outputs.json)"
           STATIC_SITE_HOSTNAME="$(jq -r '.staticSiteDefaultHostname.value' /tmp/zenova-test-outputs.json)"
