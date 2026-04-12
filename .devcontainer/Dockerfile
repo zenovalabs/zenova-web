@@ -6,7 +6,7 @@ FROM mcr.microsoft.com/azure-functions/python:4-python3.9-core-tools
 COPY library-scripts/*.sh library-scripts/*.env /tmp/library-scripts/
 
 # Install Node.js, Azure Static Web Apps CLI and Azure Functions Core Tools
-ARG NODE_VERSION="16"
+ARG NODE_VERSION="22"
 ARG CORE_TOOLS_VERSION="4"
 ENV NVM_DIR="/usr/local/share/nvm" \
     NVM_SYMLINK_CURRENT=true \
@@ -15,6 +15,11 @@ RUN bash /tmp/library-scripts/node-debian.sh "${NVM_DIR}" "${NODE_VERSION}" "${U
     && su vscode -c "umask 0002 && . /usr/local/share/nvm/nvm.sh && nvm install ${NODE_VERSION} 2>&1" \
     && su vscode -c "umask 0002 && npm install --cache /tmp/empty-cache -g @azure/static-web-apps-cli" \
     && if [ $CORE_TOOLS_VERSION != "4" ]; then apt-get remove -y azure-functions-core-tools-4 && apt-get update && apt-get install -y "azure-functions-core-tools-${CORE_TOOLS_VERSION}"; fi \
+    && curl -fsSL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor --batch --yes -o /usr/share/keyrings/yarn-archive-keyring.gpg \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/yarn-archive-keyring.gpg] https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends gh jq ripgrep \
+    && az bicep install \
     && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
 # [Optional] Uncomment this section to install additional OS packages.

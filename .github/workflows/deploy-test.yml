@@ -1,0 +1,120 @@
+name: Deploy Test
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/**"
+      - "infra/**"
+      - "package.json"
+      - "package-lock.json"
+      - "scripts/**"
+      - "src/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: deploy-test-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  deploy-test:
+    runs-on: ubuntu-latest
+    name: Deploy Test Environment
+    environment: test
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build static site
+        run: npm run build
+
+      - name: Validate static site
+        run: npm run validate:site
+
+      - name: Validate built output links
+        run: npm run validate:dist
+
+      - name: Validate public infra foundation
+        run: npm run validate:infra
+
+      - name: Validate GitHub workflows
+        run: npm run validate:workflows
+
+      - name: Evaluate release branch
+        id: release_ref
+        run: |
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            echo "can_release=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "can_release=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Evaluate deploy prerequisites
+        id: gate
+        if: steps.release_ref.outputs.can_release == 'true'
+        env:
+          AZURE_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
+          AZURE_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+          AZURE_DEPLOYMENT_LOCATION: ${{ vars.AZURE_DEPLOYMENT_LOCATION }}
+          SWA_API_TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+        run: |
+          if [ -n "$AZURE_CLIENT_ID" ] && [ -n "$AZURE_TENANT_ID" ] && [ -n "$AZURE_SUBSCRIPTION_ID" ] && [ -n "$AZURE_DEPLOYMENT_LOCATION" ] && [ -n "$SWA_API_TOKEN" ]; then
+            echo "can_deploy=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "can_deploy=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Explain skipped non-main deploy
+        if: steps.release_ref.outputs.can_release != 'true'
+        run: echo "Test deployment skipped because only the main branch is allowed to deploy."
+
+      - name: Explain skipped deploy
+        if: steps.release_ref.outputs.can_release == 'true' && steps.gate.outputs.can_deploy != 'true'
+        run: |
+          echo "Test deployment skipped because the GitHub Environment 'test' is not fully configured."
+          echo "Required vars: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_SUBSCRIPTION_ID, AZURE_DEPLOYMENT_LOCATION."
+          echo "Required secret: AZURE_STATIC_WEB_APPS_API_TOKEN."
+
+      - name: Azure login with OIDC
+        if: steps.release_ref.outputs.can_release == 'true' && steps.gate.outputs.can_deploy == 'true'
+        uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy test infrastructure
+        if: steps.release_ref.outputs.can_release == 'true' && steps.gate.outputs.can_deploy == 'true'
+        run: |
+          az deployment sub create \
+            --name "zenova-web-test-${{ github.run_id }}" \
+            --location "${{ vars.AZURE_DEPLOYMENT_LOCATION }}" \
+            --template-file infra/main.bicep \
+            --parameters infra/params/test.bicepparam
+
+      - name: Deploy test website
+        if: steps.release_ref.outputs.can_release == 'true' && steps.gate.outputs.can_deploy == 'true'
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          action: upload
+          app_location: dist
+          output_location: .
+          skip_app_build: true

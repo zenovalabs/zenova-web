@@ -4,3 +4,10 @@ node_modules/
 **/.DS_Store
 src/assets/certificates/convert-certs.sh
 dist/
+infra/baseline/swa/*
+!infra/baseline/swa/.gitkeep
+infra/baseline/afd/*
+!infra/baseline/afd/.gitkeep
+infra/baseline/rg/*
+!infra/baseline/rg/.gitkeep
+.local/

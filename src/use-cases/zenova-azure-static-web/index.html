@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>zenova.sk: end-to-end referencia delivery flow pre Azure web | ZENOVA Labs</title>
+  <meta name="description" content="Referencia: zenova.sk ako end-to-end Azure web delivery flow od HLD a implementácie vo VS Code cez validáciu a GitHub Actions až po nasadenie a prevádzku v Azure." />
+  <link rel="canonical" href="https://www.zenova.sk/use-cases/zenova-azure-static-web/" />
+  <link rel="alternate" hreflang="sk" href="https://www.zenova.sk/use-cases/zenova-azure-static-web/" />
+  <link rel="alternate" hreflang="en" href="https://www.zenova.sk/en/use-cases/zenova-azure-static-web/" />
+  <link rel="alternate" hreflang="x-default" href="https://www.zenova.sk/" />
+  <meta property="og:title" content="zenova.sk: end-to-end referencia delivery flow pre Azure web | ZENOVA Labs" />
+  <meta property="og:description" content="Referencia: zenova.sk ako end-to-end Azure web delivery flow od HLD a implementácie vo VS Code cez validáciu a GitHub Actions až po nasadenie a prevádzku v Azure." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://www.zenova.sk/use-cases/zenova-azure-static-web/" />
+  <meta property="og:image" content="https://www.zenova.sk/assets/zenova.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="zenova.sk: end-to-end referencia delivery flow pre Azure web | ZENOVA Labs" />
+  <meta name="twitter:description" content="Referencia: zenova.sk ako end-to-end Azure web delivery flow od HLD a implementácie vo VS Code cez validáciu a GitHub Actions až po nasadenie a prevádzku v Azure." />
+  <meta name="twitter:image" content="https://www.zenova.sk/assets/zenova.png" />
+  <link rel="stylesheet" href="/styles.css?v=20260412" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="backdrop" aria-hidden="true"><span class="orb orb-1"></span><span class="orb orb-2"></span><span class="orb orb-3"></span><span class="grid"></span></div>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="/"><img src="/assets/zenova.png" alt="ZENOVA Labs logo" /><div class="brand-text"><span class="brand-name">ZENOVA Labs</span><span class="brand-subtitle">Cloud / Networking / IoT / AI</span></div></a>
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle menu"><span class="sr-only">Menu</span><span class="nav-toggle-lines" aria-hidden="true"><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span><span class="nav-toggle-bar"></span></span></button>
+      <div class="nav-actions" id="primary-nav">
+        <nav class="site-nav">
+          <a href="/">Domov</a>
+          <a href="/sluzby/">Služby</a>
+          <a class="is-current" href="/use-cases/">Referencie</a>
+          <a href="/o-nas/">O nás</a>
+          <a href="/kontakt/">Kontakt</a>
+        </nav>
+        <div class="nav-cta">
+          <a id="lang-toggle" class="btn ghost" href="/en/use-cases/zenova-azure-static-web/" data-target-lang="en">EN</a>
+          <a class="btn primary" href="/kontakt/">Napíšte nám</a>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main>
+    <section class="page-hero">
+      <div class="container section-head">
+        <p class="section-label">Referencia</p>
+        <h1>zenova.sk ako end-to-end referencia delivery flow pre Azure web</h1>
+        <p class="lead">Táto referencia ukazuje kompletný tok od návrhu architektúry a HLD, cez implementáciu vo VS Code, validáciu a GitHub Actions workflowy, až po nasadenie a prevádzku webu v Azure.</p>
+        <a class="source-link" href="https://github.com/zenovalabs/zenova-web" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.41 7.86 10.94.57.1.78-.25.78-.56 0-.27-.01-1.17-.02-2.12-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.71 1.26 3.37.97.1-.75.4-1.26.72-1.55-2.55-.29-5.23-1.28-5.23-5.67 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.46.11-3.04 0 0 .97-.31 3.17 1.17a11.02 11.02 0 0 1 5.78 0c2.2-1.48 3.17-1.17 3.17-1.17.62 1.58.23 2.75.11 3.04.73.8 1.18 1.82 1.18 3.07 0 4.4-2.69 5.38-5.25 5.66.41.35.77 1.04.77 2.11 0 1.52-.01 2.75-.01 3.12 0 .31.2.67.79.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z" fill="currentColor"/></svg>
+          <span>Public repository on GitHub</span>
+        </a>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container meta-grid">
+        <div class="meta-item"><strong>Typ projektu</strong>produkčný web + verejná end-to-end delivery referencia</div>
+        <div class="meta-item"><strong>Hosting</strong>Azure Static Web Apps Standard</div>
+        <div class="meta-item"><strong>IaC smer</strong>Bicep a dokumentované decision records</div>
+        <div class="meta-item"><strong>Jazykový model</strong>`/` a `/en/` bez doménového routing overkillu</div>
+      </div>
+    </section>
+    <section class="section alt">
+      <div class="container split-grid">
+        <article class="card architecture-snapshot">
+          <div class="arch-header">
+            <p class="section-label">Architecture snapshot</p>
+            <h2>Ako tento web funguje ako malý, ale reprezentatívny Azure projekt</h2>
+            <p class="section-lead">Cieľom nebolo pridať čo najviac vrstiev. Cieľom bolo ukázať čistý tok od HLD a rozhodnutí v repozitári, cez lokálnu implementáciu a workflowy, až po produkčný web so SK a EN vetvou v Azure.</p>
+          </div>
+          <div class="architecture-flow">
+            <div class="arch-node">
+              <span class="arch-kicker">Source of truth</span>
+              <strong>Public GitHub repo</strong>
+              <p>Obsah, frontend, decision records a verejné workflow smerovanie v jednom repozitári.</p>
+            </div>
+            <div class="arch-link" aria-hidden="true">→</div>
+            <div class="arch-node">
+              <span class="arch-kicker">Delivery layer</span>
+              <strong>Build a CI/CD základ</strong>
+              <p>Statický build, validácia konfigurácie a pripravený priestor pre test a prod delivery model.</p>
+            </div>
+            <div class="arch-link" aria-hidden="true">→</div>
+            <div class="arch-node">
+              <span class="arch-kicker">Hosting</span>
+              <strong>Azure Static Web Apps Standard</strong>
+              <p>Rozumný produkčný hosting bez zbytočnej edge komplexity pre tento rozsah webu.</p>
+            </div>
+            <div class="arch-link" aria-hidden="true">→</div>
+            <div class="arch-node">
+              <span class="arch-kicker">Experience layer</span>
+              <strong>zenova.sk / a /en/</strong>
+              <p>Stabilné SEO URL vetvy, responzívny frontend a referencie ako dôkazová obsahová vrstva.</p>
+            </div>
+          </div>
+        </article>
+        <aside class="card architecture-notes">
+          <h3>Architektonické zásady</h3>
+          <ul class="detail-list">
+            <li>jedna kanonická doména a jednoduchý jazykový model cez URL vetvy</li>
+            <li>SWA Standard ako vedomý kompromis medzi cenou, jednoduchosťou a produkčnou kvalitou</li>
+            <li>verejné rozhodnutia v docs namiesto skrytých ad hoc poznámok</li>
+            <li>IaC a edge vrstva pripravené na rozšírenie, nie nasadené len preto, že sa dajú nasadiť</li>
+          </ul>
+          <div class="arch-tags" aria-label="Architecture decisions in this project">
+            <span class="arch-tag">SWA Standard</span>
+            <span class="arch-tag">Bicep</span>
+            <span class="arch-tag">/ a /en/</span>
+            <span class="arch-tag">Public docs</span>
+            <span class="arch-tag">Delivery reference</span>
+          </div>
+        </aside>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <div class="section-head impact-head">
+          <p class="section-label">Delivery model</p>
+          <h2>Ako tento projekt prechádza od lokálneho vývoja po produkčný web</h2>
+        </div>
+        <div class="metric-showcase-grid">
+          <article class="metric-showcase-card">
+            <h3>Local</h3>
+            <strong class="metric-showcase-value">npm start</strong>
+            <p>Lokálny vývoj v devcontainery a rýchle overenie layoutu, SEO routingu a detailných referencií na `localhost:8000`.</p>
+          </article>
+          <article class="metric-showcase-card">
+            <h3>PR preview</h3>
+            <strong class="metric-showcase-value">SWA preview</strong>
+            <p>Pull request vrstva pre obsahový a vizuálny review cez Azure Static Web Apps preview environments.</p>
+          </article>
+          <article class="metric-showcase-card">
+            <h3>Test</h3>
+            <strong class="metric-showcase-value">OIDC + Bicep</strong>
+            <p>Stabilné non-prod prostredie cez `deploy-test.yml`, verejné parametre a GitHub Environment `test`.</p>
+          </article>
+          <article class="metric-showcase-card">
+            <h3>Production</h3>
+            <strong class="metric-showcase-value">zenova.sk</strong>
+            <p>Kontrolovaný release cez `deploy-prod.yml`, SWA Standard a kanonickú doménu `zenova.sk` s vetvami `/` a `/en/`.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container split-grid">
+        <article class="card detail-card">
+          <h3>Situácia</h3>
+          <p>Cieľom nebolo len prerobiť firemnú stránku. Cieľom bolo vytvoriť malý, ale reprezentatívny webový projekt, ktorý bude fungovať v produkcii a zároveň poslúži ako verejná end-to-end referencia pre návrh, delivery a prevádzku Azure webu.</p>
+          <ul class="detail-list">
+            <li>bez CMS a bez databázy</li>
+            <li>verejný GitHub repozitár bez interných secrets</li>
+            <li>potreba oddeliť produkčný web od interných plánov, ale zachovať verejnú technickú hodnotu projektu</li>
+          </ul>
+        </article>
+        <article class="card detail-card">
+          <h3>Návrh riešenia</h3>
+          <p>Web je postavený ako statický viacstránkový frontend so samostatnou SK a EN vetvou, s hostingom na Azure Static Web Apps Standard. Architektonické rozhodnutia sú popísané priamo v repozitári a infra smer je pripravený na Bicep a ďalšie CI/CD rozšírenie.</p>
+          <ul class="detail-list">
+            <li>Azure Static Web Apps Standard ako rozumný produkčný základ</li>
+            <li>viacstránkový model namiesto jednej preťaženej landing page</li>
+            <li>SEO-friendly URL vetvy cez `/` a `/en/`</li>
+            <li>dokumentované rozhodnutia pre edge a IaC vrstvu</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container split-grid">
+        <article class="card detail-card">
+          <h3>Delivery model v praxi</h3>
+          <p>Repo už dnes ukazuje verejnú kostru delivery modelu bez toho, aby zverejňoval secrets. Bicep foundation, workflowy a dokumentácia sú v repozitári, ale environment variables, OIDC a SWA tokeny ostávajú mimo neho.</p>
+          <ul class="detail-list">
+            <li>subscription-level `infra/main.bicep` a verejné `test` / `prod` parametre</li>
+            <li>`ci-validation`, `infra-whatif`, `deploy-test`, `deploy-prod` a `preview-pr` workflowy</li>
+            <li>jasné rozdelenie medzi automatizovanou vrstvou v repo a manuálnym environment setupom mimo repo</li>
+          </ul>
+        </article>
+        <article class="card detail-card">
+          <h3>Súvisiaca verejná dokumentácia</h3>
+          <p>Tento use case je zámerne prepojený s dokumentáciou, aby návštevník repozitára vedel rýchlo pochopiť rozhodnutia aj implementačný smer.</p>
+          <ul class="detail-list">
+            <li><a href="https://github.com/zenovalabs/zenova-web/blob/main/docs/azure-infra-cicd-plan.md" target="_blank" rel="noopener">Azure infra a CI/CD plan</a></li>
+            <li><a href="https://github.com/zenovalabs/zenova-web/blob/main/docs/azure-environments-delivery-model.md" target="_blank" rel="noopener">Azure environments and delivery model</a></li>
+            <li><a href="https://github.com/zenovalabs/zenova-web/blob/main/docs/azure-iac-decision.md" target="_blank" rel="noopener">Azure IaC decision record</a></li>
+            <li><a href="https://github.com/zenovalabs/zenova-web/blob/main/README.md" target="_blank" rel="noopener">README projektu</a></li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <section class="section alt">
+      <div class="container split-grid">
+        <article class="card detail-card">
+          <h3>Prečo je to zaujímavé ako referencia</h3>
+          <p>Projekt ukazuje, že aj malý firemný web môže byť navrhnutý ako technicky čistá Azure referencia. Hodnota nie je len v hostingu, ale aj v tom, ako sa pracuje s decision records, verejnou dokumentáciou, baseline infra importom a postupným budovaním delivery vrstvy.</p>
+          <ul class="detail-list">
+            <li>produkčný web a technická referenčná ukážka v jednom</li>
+            <li>rozumný rozsah bez zbytočného enterprise over-engineeringu</li>
+            <li>jasná upgrade cesta pre IaC, test/prod prostredia a ďalšie referencie</li>
+          </ul>
+        </article>
+        <article class="card detail-card">
+          <h3>Výsledok</h3>
+          <p>zenova.sk sa stáva nielen predajnou a SEO vrstvou firmy, ale aj vlastným dôkazom schopnosti navrhnúť a odkomunikovať Azure webový projekt end-to-end. Práve preto je verejný GitHub repozitár dôležitou súčasťou tejto referencie.</p>
+          <ul class="detail-list">
+            <li>prehľadnejšia štruktúra webu pre vyhľadávanie aj obchod</li>
+            <li>reálne prepojenie webu, Azure architektúry a repozitárovej dokumentácie</li>
+            <li>verejný projekt, ktorý sa dá ukázať klientovi aj použiť ako technický referenčný asset</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <section class="section contact">
+      <div class="container">
+        <div class="cta-band">
+          <div>
+            <p class="section-label">Repo a ďalší krok</p>
+            <h2>Ak chceš podobný statický Azure web alebo verejný showcase projekt, vieme navrhnúť rovnaký delivery model aj pre tvoje prostredie</h2>
+            <p class="source-note">Súčasťou tohto use case je aj verejný GitHub repozitár, v ktorom sú zachytené rozhodnutia, dokumentácia, workflowy aj samotná implementácia webu.</p>
+          </div>
+          <div class="cta-actions">
+            <a class="btn primary" href="https://github.com/zenovalabs/zenova-web" target="_blank" rel="noopener">Otvoriť GitHub repo</a>
+            <a class="btn secondary" href="/kontakt/">Kontaktovať ZENOVA Labs</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer"><div class="container footer-grid"><div><span class="footer-brand">ZENOVA Labs, s.r.o.</span><p class="footer-note">Cloud, siete, IoT a AI productivity pre moderné organizácie.</p></div><div class="footer-meta"><p>&copy; <span id="year"></span> ZENOVA Labs, s.r.o.</p></div></div></footer>
+  <div class="consent-banner hidden" id="consent-banner" role="dialog" aria-live="polite" aria-label="Cookie consent"><div class="consent-text"><strong class="consent-title">Cookies</strong><p>Používame cookies iba na základné meranie návštevnosti a funkčnosti stránky.</p></div><div class="consent-actions"><button class="btn secondary" id="consent-decline" type="button">Odmietnuť</button><button class="btn primary" id="consent-accept" type="button">Povoliť</button></div></div>
+  <script src="/script.js?v=20260412" defer></script>
+</body>
+</html>

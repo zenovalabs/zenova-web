@@ -4,14 +4,16 @@
 	"name": "Azure Static Web Apps - vanilla sample",
 	"build": {
 		"dockerfile": "Dockerfile",
+		"options": ["--platform=linux/amd64"],
 		"args": {
 			// Please look at runtime version support to make sure you're using compatible versions
 			// https://docs.microsoft.com/en-us/azure/azure-functions/supported-languages#languages-by-runtime-version
-			"NODE_VERSION": "20",
+			"NODE_VERSION": "22",
 			"CORE_TOOLS_VERSION": "4"
 		}
 	},
 	"forwardPorts": [ 8000, 7081, 4280 ],
+	"runArgs": ["--platform=linux/amd64"],
 
 	"portsAttributes": {
 		"8000": {
