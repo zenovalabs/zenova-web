@@ -102,18 +102,6 @@ function ensureAzBicepInstalled() {
 function validateBicepFile(filePath) {
   const relative = path.relative(repoRoot, filePath);
 
-  if (commandAvailable("bicep")) {
-    const result = spawnSync("bicep", ["build", "--file", filePath, "--stdout"], {
-      cwd: repoRoot,
-      encoding: "utf8"
-    });
-
-    if (result.status !== 0) {
-      errors.push(`${relative}: Bicep build failed`);
-    }
-    return;
-  }
-
   if (ensureAzBicepInstalled()) {
     const result = spawnSync("az", ["bicep", "build", "--file", filePath, "--stdout"], {
       cwd: repoRoot,
@@ -127,7 +115,20 @@ function validateBicepFile(filePath) {
     return;
   }
 
-  errors.push(`${relative}: found public Bicep file but neither 'bicep' nor 'az' CLI is available for validation`);
+  if (commandAvailable("bicep")) {
+    const result = spawnSync("bicep", ["build", "--file", filePath, "--stdout"], {
+      cwd: repoRoot,
+      encoding: "utf8",
+      timeout: 60_000
+    });
+
+    if (result.status !== 0) {
+      errors.push(`${relative}: Bicep build failed`);
+    }
+    return;
+  }
+
+  errors.push(`${relative}: found public Bicep file but neither 'az' nor 'bicep' CLI is available for validation`);
 }
 
 function validateBicepParamFile(filePath) {
