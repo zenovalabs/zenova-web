@@ -3,12 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ZENOVA Labs, s.r.o.</title>
+  <title>Cloud, siete, IoT a AI productivity | ZENOVA Labs</title>
+  <meta name="description" content="ZENOVA Labs navrhuje Microsoft 365, Microsoft Azure a ďalšie public cloud služby, networking, security a IoT riešenia. Praktický statický web postavený ako verejný Azure showcase projekt." />
+  <link rel="canonical" href="https://www.zenova.sk/" />
+  <link rel="alternate" hreflang="sk" href="https://www.zenova.sk/" />
+  <link rel="alternate" hreflang="en" href="https://www.zenova.sk/en/" />
+  <link rel="alternate" hreflang="x-default" href="https://www.zenova.sk/" />
+  <meta property="og:title" content="Cloud, siete, IoT a AI productivity | ZENOVA Labs" />
+  <meta property="og:description" content="Microsoft 365, networking, security a IoT riešenia navrhnuté tak, aby sa dali reálne prevádzkovať a rozvíjať." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.zenova.sk/" />
+  <meta property="og:image" content="https://www.zenova.sk/assets/zenova.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
-  <!-- Google tag (gtag.js) -->
+  <link rel="stylesheet" href="/styles.css?v=20260412" />
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-W93VQRBXYL"></script>
   <script>
     window.GA_ID = 'G-W93VQRBXYL';
@@ -17,6 +26,24 @@
     gtag('consent', 'default', { ad_storage: 'denied', analytics_storage: 'denied' });
     gtag('js', new Date());
     gtag('config', window.GA_ID);
+  </script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      "name": "ZENOVA Labs, s.r.o.",
+      "url": "https://www.zenova.sk/",
+      "logo": "https://www.zenova.sk/assets/zenova.png",
+      "email": "info@zenova.sk",
+      "telephone": "+421910128395",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Pezinska 47",
+        "addressLocality": "Svaty Jur",
+        "postalCode": "90021",
+        "addressCountry": "SK"
+      }
+    }
   </script>
 </head>
 <body>
@@ -29,12 +56,11 @@
 
   <header class="site-header">
     <div class="container nav-wrap">
-      <a class="brand" href="#top">
-        <img src="assets/zenova.png" alt="ZENOVA Labs logo" />
+      <a class="brand" href="/">
+        <img src="/assets/zenova.png" alt="ZENOVA Labs logo" />
         <div class="brand-text">
           <span class="brand-name">ZENOVA Labs</span>
-          <span class="brand-subtitle lang-sk">Cloud / Siete / Automatizácia</span>
-          <span class="brand-subtitle lang-en">Cloud / Networking / Automation</span>
+          <span class="brand-subtitle">Cloud / Networking / IoT / AI</span>
         </div>
       </a>
       <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle menu">
@@ -47,297 +73,181 @@
       </button>
       <div class="nav-actions" id="primary-nav">
         <nav class="site-nav">
-          <a href="#services"><span class="lang-sk">Služby</span><span class="lang-en">Services</span></a>
-          <a href="#expertise"><span class="lang-sk">Expertíza</span><span class="lang-en">Expertise</span></a>
-          <a href="#ecosystem"><span class="lang-sk">Ecosystém</span><span class="lang-en">Ecosystem</span></a>
-          <a href="#certificates"><span class="lang-sk">Certifikáty</span><span class="lang-en">Certificates</span></a>
-          <a href="#contact"><span class="lang-sk">Kontakt</span><span class="lang-en">Contact</span></a>
+          <a class="is-current" href="/">Domov</a>
+          <a href="/sluzby/">Služby</a>
+          <a href="/use-cases/">Referencie</a>
+          <a href="/o-nas/">O nás</a>
+          <a href="/kontakt/">Kontakt</a>
         </nav>
         <div class="nav-cta">
-          <button id="lang-toggle" class="btn ghost" type="button">EN</button>
-          <a class="btn primary" href="#contact">
-            <span class="lang-sk">Napíšte nám</span>
-            <span class="lang-en">Get in touch</span>
-          </a>
+          <a id="lang-toggle" class="btn ghost" href="/en/" data-target-lang="en">EN</a>
+          <a class="btn primary" href="/kontakt/">Napíšte nám</a>
         </div>
       </div>
     </div>
   </header>
 
-  <main id="top">
+  <main>
     <section class="hero">
       <div class="container hero-grid">
         <div class="hero-copy stagger">
-          <p class="eyebrow lang-sk">Moderná infraštruktúra a automatizácia</p>
-          <p class="eyebrow lang-en">Modern infrastructure &amp; automation</p>
-          <h1>
-            <span class="lang-sk">Cloudové a sieťové platformy, ktoré držia váš biznis v pohybe.</span>
-            <span class="lang-en">Cloud and networking platforms that keep your business moving.</span>
-          </h1>
-          <p class="lead">
-            <span class="lang-sk">Navrhujeme, migrujeme a automatizujeme infraštruktúru od Microsoft 365 až po cloud-native platformy s dôrazom na bezpečnosť, dostupnosť a škálovateľnosť.</span>
-            <span class="lang-en">We design, migrate, and automate infrastructure from Microsoft 365 to cloud-native platforms, focusing on security, availability, and scale.</span>
-          </p>
+          <p class="eyebrow">Produkčný web aj Azure showcase</p>
+          <h1>Cloud, siete, IoT a AI productivity navrhnuté tak, aby sa dali reálne prevádzkovať.</h1>
+          <p class="lead">ZENOVA Labs pomáha firmám so službami okolo Microsoft 365, Microsoft Azure, public cloud služieb, sieťovej architektúry, bezpečnosti a IoT riešení. Tento web zároveň budujeme ako ukážkový statický Azure projekt s čistou dokumentáciou, IaC a CI/CD základom.</p>
           <div class="hero-cta">
-            <a class="btn primary" href="#contact">
-              <span class="lang-sk">Začať spoluprácu</span>
-              <span class="lang-en">Start a project</span>
-            </a>
-            <a class="btn secondary" href="#services">
-              <span class="lang-sk">Pozrieť služby</span>
-              <span class="lang-en">Explore services</span>
-            </a>
+            <a class="btn primary" href="/kontakt/">Začať spoluprácu</a>
+            <a class="btn secondary" href="/use-cases/">Pozrieť use cases</a>
           </div>
           <div class="hero-badges stagger">
-            <span class="badge"><span class="lang-sk">Microsoft Partner</span><span class="lang-en">Microsoft Partner</span></span>
-            <span class="badge"><span class="lang-sk">Cloud-native platformy</span><span class="lang-en">Cloud-native platforms</span></span>
-            <span class="badge"><span class="lang-sk">Sieťové architektúry</span><span class="lang-en">Network architectures</span></span>
-            <span class="badge"><span class="lang-sk">Migrácie do cloudu</span><span class="lang-en">Cloud migrations</span></span>
-            <span class="badge"><span class="lang-sk">Služby auditu</span><span class="lang-en">Audit services</span></span>
+            <span class="badge">Microsoft 365 a cloud migration</span>
+            <span class="badge">Networking, security a public cloud</span>
+            <span class="badge">IoT riešenia</span>
+            <span class="badge">Automation a observability</span>
           </div>
         </div>
         <div class="hero-card reveal">
           <div class="glass-card">
-            <h3>
-              <span class="lang-sk">Fokus oblasti</span>
-              <span class="lang-en">Focus areas</span>
-            </h3>
+            <h3>Čo je teraz jadro webu</h3>
             <ul class="checklist stagger">
-              <li>
-                <span class="lang-sk">Cloudové migrácie a Microsoft 365</span>
-                <span class="lang-en">Cloud migrations &amp; Microsoft 365</span>
-              </li>
-              <li>
-                <span class="lang-sk">Enterprise infraštruktúra &amp; bezpečnosť</span>
-                <span class="lang-en">Enterprise infrastructure &amp; security</span>
-              </li>
-              <li>
-                <span class="lang-sk">Automatizácia a IaC</span>
-                <span class="lang-en">Automation &amp; IaC</span>
-              </li>
-              <li>
-                <span class="lang-sk">Kubernetes &amp; observability</span>
-                <span class="lang-en">Kubernetes &amp; observability</span>
-              </li>
-              <li>
-                <span class="lang-sk">Future-proof pracovné prostredia</span>
-                <span class="lang-en">Future-proofed workplaces</span>
-              </li>
-              <li>
-                <span class="lang-sk">AI Agents &amp; AI Engineering</span>
-                <span class="lang-en">AI Agents &amp; AI Engineering</span>
-              </li>
-              <li>
-                <span class="lang-sk">Návrh novodobej architektúry dátových centier</span>
-                <span class="lang-en">Building future architecture of data centres</span>
-              </li>
+              <li>tri jasné služby namiesto jednej preťaženej landing page</li>
+              <li>stabilná jazyková vetva cez <strong>/</strong> a <strong>/en/</strong></li>
+              <li>samostatné use cases ako SEO a obchodná dôkazová vrstva</li>
+              <li>Azure Static Web Apps Standard bez zbytočnej edge komplexity</li>
             </ul>
             <div class="mini-panel">
-              <p class="lang-sk">Od návrhu po prevádzku, vždy s jasnou architektúrou.</p>
-              <p class="lang-en">From architecture to operations, with a clear blueprint.</p>
+              <strong>Prvý release</strong>
+              statický, rýchly a plne responzívny web bez CMS a databázy.
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="services" class="section">
+    <section class="section">
       <div class="container">
         <div class="section-head">
-          <p class="section-label lang-sk">Naše služby</p>
-          <p class="section-label lang-en">Our services</p>
-          <h2>
-            <span class="lang-sk">End-to-end riešenia pre moderný IT stack</span>
-            <span class="lang-en">End-to-end solutions for modern IT stacks</span>
-          </h2>
-          <p class="section-lead">
-            <span class="lang-sk">Od cloudovej stratégie až po automatizované operácie  -  pomáhame vám vybudovať infraštruktúru, ktorá škáluje.</span>
-            <span class="lang-en">From cloud strategy to automated operations  -  we help you build infrastructure that scales.</span>
-          </p>
+          <p class="section-label">Hlavné smery</p>
+          <h2>Tri piliere, na ktorých je postavený nový web</h2>
+          <p class="section-lead">Namiesto dlhého zoznamu technológií staviame web na troch obchodne čitateľných oblastiach. Automation a observability ostávajú prítomné, ale ako schopnosť naprieč službami.</p>
         </div>
-        <ul class="services-grid stagger">
-          <li class="card"><span class="lang-sk">Migrácia z on-prem prostredia do Microsoft 365</span><span class="lang-en">Migration from on-premises to Microsoft 365</span></li>
-          <li class="card"><span class="lang-sk">Vytváranie jednoduchých aplikácií</span><span class="lang-en">Building lightweight applications</span></li>
-          <li class="card"><span class="lang-sk">Automatizácia a viditeľnosť v infraštruktúre</span><span class="lang-en">Automation and observability in a infrastructure</span></li>
-          <li class="card"><span class="lang-sk">Pracovné prostredia pripravené na budúcnosť. Future-proofed workspaces.</span><span class="lang-en">Future-proofed workspaces</span></li>
-          <li class="card"><span class="lang-sk">Budovanie dátových centier pomocou BGP EVPN VXLAN</span><span class="lang-en">Data-centre design with BGP EVPN VXLAN</span></li>
-          <li class="card"><span class="lang-sk">Dizajn podnikovej infraštruktúry (wireless LAN, LAN, WAN)</span><span class="lang-en">Design of enterprise wireless &amp; wired infrastructure</span></li>
-          <li class="card"><span class="lang-sk">Vysoká dostupnosť v Microsoft Azure</span><span class="lang-en">High-availability deployments on Microsoft Azure</span></li>
-          <li class="card"><span class="lang-sk">SD-WAN (Meraki, Catalyst) &amp; SD-Access</span><span class="lang-en">SD-WAN (Meraki, Catalyst) &amp; SD-Access</span></li>
-          <li class="card"><span class="lang-sk">IEEE 802.1X, ZTA, SASE implementácie</span><span class="lang-en">IEEE 802.1X, ZTA &amp; SASE implementations</span></li>
-          <li class="card"><span class="lang-sk">Komplexné riešenia postavené na Cisco Meraki ekosystéme</span><span class="lang-en">Solutions built on the Cisco Meraki ecosystem</span></li>
-          <li class="card"><span class="lang-sk">Kubernetes &amp; Cloud-Native platformy (návrh, nasadenie, správa)</span><span class="lang-en">Kubernetes &amp; cloud-native platforms (design, deployment, management)</span></li>
-          <li class="card"><span class="lang-sk">Programovateľnosť sietí &amp; IaC (Python, API, DevNet)</span><span class="lang-en">Network programmability &amp; IaC (Python, API, DevNet)</span></li>
-          <li class="card"><span class="lang-sk">Hyperkonvergovaná infraštruktúra Cisco HyperFlex &amp; Intersight</span><span class="lang-en">Hyperconverged infrastructure with Cisco HyperFlex &amp; Intersight</span></li>
-          <li class="card"><span class="lang-sk">Cisco ACI a modernizácia DC fabric</span><span class="lang-en">Cisco ACI &amp; data-centre fabric modernisation</span></li>
-          <li class="card"><span class="lang-sk">Identity management, Zero-Trust &amp; Cisco ISE</span><span class="lang-en">Identity management, Zero-Trust &amp; Cisco ISE</span></li>
-          <li class="card"><span class="lang-sk">Full-Stack Observability &amp; monitoring vo veľkom meradle</span><span class="lang-en">Full-stack observability &amp; hyperscale monitoring</span></li>
-          <li class="card"><span class="lang-sk">Private cloud &amp; virtualizácia (VMware, Cisco UCS)</span><span class="lang-en">Private cloud &amp; virtualisation (VMware, Cisco UCS)</span></li>
-          <li class="card"><span class="lang-sk">Unified Communications &amp; Collaboration (Webex, UCS)</span><span class="lang-en">Unified communications &amp; collaboration (Webex, UCS)</span></li>
-          <li class="card"><span class="lang-sk">Školenia &amp; workshopy (DevNet, CNCF, sieťové technológie)</span><span class="lang-en">Training &amp; workshops (DevNet, CNCF, networking)</span></li>
-        </ul>
-      </div>
-    </section>
-
-    <section id="expertise" class="section alt">
-      <div class="container">
-        <div class="section-head">
-          <p class="section-label lang-sk">Expertíza</p>
-          <p class="section-label lang-en">Expertise</p>
-          <h2>
-            <span class="lang-sk">Architektúra, ktorú si tím osvojí</span>
-            <span class="lang-en">Architecture your team can own</span>
-          </h2>
-          <p class="section-lead">
-            <span class="lang-sk">Navrhujeme riešenia s dôrazom na prevádzkovateľnosť, bezpečnosť a automatizáciu.</span>
-            <span class="lang-en">We design with operability, security, and automation at the core.</span>
-          </p>
-        </div>
-        <div class="pillars stagger">
-          <article class="card pillar">
-            <h3><span class="lang-sk">Praktický návrh</span><span class="lang-en">Practical design</span></h3>
-            <p><span class="lang-sk">Jednoduché, udržiavateľné architektúry, ktoré rastú spolu s vaším biznisom.</span><span class="lang-en">Simple, maintainable architectures that grow with your business.</span></p>
+        <div class="services-grid stagger">
+          <article class="card">
+            <h3>Microsoft 365, cloud migration a AI productivity</h3>
+            <p>Migrácie, Copilot readiness, Power Automate a praktická adopcia Microsoft Azure a public cloud služieb pre firmy, ktoré chcú získať lepšie workflowy a menej prevádzkovej záťaže.</p>
+            <a class="card-link" href="/sluzby/">Viac o službách</a>
           </article>
-          <article class="card pillar">
-            <h3><span class="lang-sk">Bezpečnosť v základe</span><span class="lang-en">Security by default</span></h3>
-            <p><span class="lang-sk">Zero-Trust, identity management a segmentácia ako štandard, nie dodatok.</span><span class="lang-en">Zero-Trust, identity management, and segmentation as a standard, not an add-on.</span></p>
+          <article class="card">
+            <h3>Networking a security</h3>
+            <p>Enterprise networking, segmentácia, SD-WAN, Meraki, bezpečnostná architektúra a prevádzková nadväznosť na public cloud prostredie.</p>
+            <a class="card-link" href="/sluzby/">Pozrieť si možnosti</a>
           </article>
-          <article class="card pillar">
-            <h3><span class="lang-sk">Automatizácia od začiatku</span><span class="lang-en">Automation first</span></h3>
-            <p><span class="lang-sk">IaC, API a workflow automatizácia pre rýchle a stabilné nasadzovanie.</span><span class="lang-en">IaC, APIs, and workflow automation for fast and stable delivery.</span></p>
+          <article class="card">
+            <h3>IoT riešenia</h3>
+            <p>Monitoring zariadení, zber dát, vzdialený dohľad a prepojenie fyzickej vrstvy s cloudom tak, aby z IoT vznikla použiteľná prevádzková informácia.</p>
+            <a class="card-link" href="/use-cases/">Pozrieť si prípadové štúdie</a>
           </article>
         </div>
       </div>
     </section>
 
-    <section id="ecosystem" class="section">
+    <section class="section alt">
       <div class="container">
         <div class="section-head">
-          <p class="section-label lang-sk">Ecosystém</p>
-          <p class="section-label lang-en">Ecosystem</p>
-          <h2>
-            <span class="lang-sk">Spolupracujeme s lídrami trhu</span>
-            <span class="lang-en">Working with market leaders</span>
-          </h2>
-          <p class="section-lead">
-            <span class="lang-sk">Staváme na osvedčených platformách a dlhodobých partnerstvách.</span>
-            <span class="lang-en">Built on trusted platforms and long-term partnerships.</span>
-          </p>
+          <p class="section-label">Vybrané use cases</p>
+          <h2>Obsah, ktorý má pomôcť predaju aj organickému vyhľadávaniu</h2>
+          <p class="section-lead">Namiesto všeobecných marketingových viet chceme stavať na konkrétnych situáciách, problémoch, návrhoch riešení a výsledkoch.</p>
         </div>
-        <div class="logo-panels stagger">
-          <div class="logo-card card">
-            <h3><span class="lang-sk">Partneri</span><span class="lang-en">Partners</span></h3>
-            <div class="logo-row">
-              <img class="logo-img" src="assets/microsoft.png" alt="Microsoft Partner" title="Microsoft Partner" />
-              <img class="logo-img logo-boost" src="assets/cisco-meraki.png" alt="Cisco Meraki Partner" title="Cisco Meraki Partner" />
-              <img class="logo-img" src="assets/codetwo-reseller.png" alt="CodeTwo Reseller" title="CodeTwo Reseller" />
-            </div>
-          </div>
-          <div class="logo-card card">
-            <h3><span class="lang-sk">Zákazníci</span><span class="lang-en">Clients</span></h3>
-            <div class="logo-row">
-              <img class="logo-img" src="assets/Woodcote-group.png" alt="WOODCOTE Group a.s." title="WOODCOTE Group a.s." />
-              <img class="logo-img" src="assets/vnet.png" alt="VNET" title="VNET" />
-            </div>
-          </div>
-          <div class="logo-card card supporting">
-            <h3><span class="lang-sk">Podporujeme</span><span class="lang-en">Supporting</span></h3>
-            <div class="logo-row">
-              <img class="logo-img logo-double" src="assets/CloudNativeBA.png" alt="Cloud Native Bratislava" title="Cloud Native Bratislava" />
-              <img class="logo-img logo-double" src="assets/KCD_CZ_SK.png" alt="KCD CZ/SK" title="KCD CZ/SK" />
-            </div>
-          </div>
+        <div class="story-grid stagger">
+          <article class="card story-card">
+            <h3>M365 migrácia a pripravenosť na Copilot</h3>
+            <p>Scenár pre firmu, ktorá potrebuje zjednotiť pracovné prostredie, zlepšiť governance a pripraviť sa na AI productivity bez chaosu v licenciách a dátach.</p>
+            <ul class="inline-list">
+              <li>tenant assessment a migration path</li>
+              <li>Power Platform a workflow automatizácia</li>
+              <li>základ pre budúci Copilot rollout</li>
+            </ul>
+            <a class="card-link" href="/use-cases/m365-migration-copilot-readiness/">Pozrieť detail use case</a>
+          </article>
+          <article class="card story-card">
+            <h3>Meraki SD-WAN pre pobočky</h3>
+            <p>Use case pre organizáciu, ktorá potrebuje zjednodušiť správu konektivity, zlepšiť viditeľnosť a pripraviť sieť na bezpečný rast nových lokalít.</p>
+            <ul class="inline-list">
+              <li>štandardizovaný branch blueprint</li>
+              <li>policy-driven security</li>
+              <li>lepšia observability siete</li>
+            </ul>
+            <a class="card-link" href="/use-cases/woodcote-meraki-sdwan/">Pozrieť detail use case</a>
+          </article>
+          <article class="card story-card">
+            <h3>IoT monitoring prevádzky</h3>
+            <p>Use case pre tímy, ktoré potrebujú vidieť stav zariadení, zbierať prevádzkové dáta a doručiť ich do cloudovej vrstvy bez zbytočnej integračnej zložitosti.</p>
+            <ul class="inline-list">
+              <li>edge konektivita a zber dát</li>
+              <li>prepojenie s cloudom a alerting</li>
+              <li>základ pre reporting a automatizáciu</li>
+            </ul>
+            <a class="card-link" href="/use-cases/iot-monitoring-operational-data/">Pozrieť detail use case</a>
+          </article>
+          <article class="card story-card">
+            <h3>zenova.sk ako Azure static web showcase</h3>
+            <p>Vlastný use case, na ktorom ukazujeme návrh viacjazyčného statického webu, Azure hosting, IaC smer a verejnú projektovú dokumentáciu v jednom repozitári.</p>
+            <ul class="inline-list">
+              <li>Azure Static Web Apps Standard</li>
+              <li>Bicep a CI/CD smer pre test a produkciu</li>
+              <li>SEO-friendly štruktúra cez `/` a `/en/`</li>
+            </ul>
+            <a class="card-link" href="/use-cases/zenova-azure-static-web/">Pozrieť detail use case</a>
+          </article>
         </div>
       </div>
     </section>
 
-    <section id="certificates" class="section alt">
-      <div class="container">
-        <div class="section-head">
-          <p class="section-label lang-sk">Certifikáty</p>
-          <p class="section-label lang-en">Certificates</p>
-          <h2>
-            <span class="lang-sk">Dôveryhodnosť podložená certifikátmi</span>
-            <span class="lang-en">Credibility backed by certifications</span>
-          </h2>
-          <p class="section-lead">
-            <span class="lang-sk">Kliknite na certifikát pre zobrazenie detailu.</span>
-            <span class="lang-en">Click a certificate to view full size.</span>
-          </p>
+    <section class="section">
+      <div class="container split-grid">
+        <div>
+          <div class="section-head">
+            <p class="section-label">Prečo tento web</p>
+            <h2>zenova.sk má byť domovská doména aj ukážkový projekt</h2>
+            <p class="section-lead">Web nebudujeme len ako marketingovú stránku. Má slúžiť aj ako verejný príklad toho, ako vyzerá malý, dobre zdokumentovaný Azure webový projekt bez zbytočného platformového overkillu.</p>
+          </div>
+          <div class="pillars stagger">
+            <article class="card pillar">
+              <h3>Statický a rýchly základ</h3>
+              <p>Bez CMS, bez databázy a bez zbytočných prevádzkových závislostí. Obsah je verzovaný v repozitári a pripravený na čistý review proces.</p>
+            </article>
+            <article class="card pillar">
+              <h3>Azure-native smer</h3>
+              <p>Hosting na Static Web Apps, IaC v Bicep a postupné dorábanie CI/CD tak, aby bolo repo použiteľné aj ako referenčný use case.</p>
+            </article>
+            <article class="card pillar">
+              <h3>SEO bez obsahovej vaty</h3>
+              <p>Oddelené URL vetvy, samostatné use cases a jasné služby namiesto jednej stránky, ktorá sa snaží rankovať na všetko naraz.</p>
+            </article>
+          </div>
         </div>
-        <div class="cert-grid" id="cert-grid">
-          <p class="cert-placeholder">
-            <span class="lang-sk">Načítava sa galéria certifikátov...</span>
-            <span class="lang-en">Loading certificate gallery...</span>
-          </p>
-        </div>
+        <aside class="card detail-card reveal">
+          <h3>Čo nasleduje ďalej</h3>
+          <ul class="detail-list">
+            <li>doplnenie plnohodnotných podstránok služieb a use case detailov</li>
+            <li>samostatná EN vetva rozšírená o ďalšie stránky</li>
+            <li>verejná IaC štruktúra v `infra/` a základné GitHub workflowy</li>
+            <li>technické SEO minimum vrátane sitemapy a hreflang kontroly</li>
+          </ul>
+        </aside>
       </div>
     </section>
 
-    <section id="contact" class="section contact">
-      <div class="container contact-grid">
-        <div class="contact-copy stagger">
-          <p class="section-label lang-sk">Kontakt</p>
-          <p class="section-label lang-en">Contact</p>
-          <h2>
-            <span class="lang-sk">Poďme sa porozprávať o vašej infraštruktúre</span>
-            <span class="lang-en">Let's talk about your infrastructure</span>
-          </h2>
-          <p class="section-lead">
-            <span class="lang-sk">Napíšte nám a pripravíme návrh ďalších krokov.</span>
-            <span class="lang-en">Tell us what you need and we'll propose the next steps.</span>
-          </p>
-          <div class="contact-items">
-            <div class="contact-item">
-              <span class="label lang-sk">Email</span>
-              <span class="label lang-en">Email</span>
-              <a href="mailto:info@zenova.sk">info@zenova.sk</a>
-            </div>
-            <div class="contact-item">
-              <span class="label lang-sk">Telefón</span>
-              <span class="label lang-en">Phone</span>
-              <a href="tel:+421910128395">+421 910 128 395</a>
-            </div>
-            <div class="contact-item">
-              <span class="label lang-sk">Adresa</span>
-              <span class="label lang-en">Address</span>
-              <span>ZENOVA Labs., s.r.o., Pezinská 47, 90021 Svätý Jur, Slovakia</span>
-            </div>
-            <div class="contact-item">
-              <span class="label lang-sk">Fakturačné údaje</span>
-              <span class="label lang-en">Billing details</span>
-              <span class="lang-sk">IČO: 36288004</span>
-              <span class="lang-en">Org. ID: 36288004</span>
-              <span class="lang-sk">DIČ: 2022148689</span>
-              <span class="lang-sk">IČ DPH: SK2022148689</span>
-              <span class="lang-en">VAT ID: SK2022148689</span>
-              <span class="lang-sk">Bankové spojenie: Tatra Banka, a. s.</span>
-              <span class="lang-en">Bank: Tatra Banka, a. s.</span>
-              <span class="lang-sk">IBAN: SK17 1100 0000 0026 2880 9226</span>
-              <span class="lang-en">IBAN: SK17 1100 0000 0026 2880 9226</span>
-            </div>
+    <section class="section contact">
+      <div class="container">
+        <div class="cta-band">
+          <div>
+            <p class="section-label">Kontakt</p>
+            <h2>Ak riešite modernizáciu prostredia, poďme si prejsť ďalší krok</h2>
+            <p>Pomôžeme so smerovaním projektu, prioritami a návrhom realistického rollout plánu bez zbytočných vrstiev navyše.</p>
           </div>
-        </div>
-        <div class="contact-card card reveal">
-          <h3><span class="lang-sk">Získať konzultáciu</span><span class="lang-en">Request a consultation</span></h3>
-          <p><span class="lang-sk">Zhrňte svoje obavy a požiadavky. My pripravíme návrh zmien architektúry aj ďalších krokov.</span><span class="lang-en">Share your needs and we’ll outline the architecture changes and next steps.</span></p>
-          <a class="btn primary" href="mailto:info@zenova.sk">
-            <span class="lang-sk">Napísať email</span>
-            <span class="lang-en">Send an email</span>
-          </a>
-          <div class="contact-note">
-            <span class="lang-sk">Odpovieme čo najskôr.</span>
-            <span class="lang-en">We’ll get back as soon as we can.</span>
-          </div>
-          <div class="meeting-embed">
-            <div class="meeting-label">
-              <span class="lang-sk">Alebo si dohodnite stretnutie</span>
-              <span class="lang-en">Arrange a meeting</span>
-            </div>
-            <a class="btn secondary meeting-link" href="https://outlook.office.com/book/ZENOVALabsQuickMeetingScheduler@zenova.sk/" target="_blank" rel="noopener">
-              <span class="lang-sk">Alebo si dohodnite stretnutie</span>
-              <span class="lang-en">Arrange a meeting</span>
-            </a>
+          <div class="cta-actions">
+            <a class="btn primary" href="/kontakt/">Kontaktovať ZENOVA Labs</a>
+            <a class="btn secondary" href="mailto:info@zenova.sk">info@zenova.sk</a>
           </div>
         </div>
       </div>
@@ -347,61 +257,30 @@
   <footer class="site-footer">
     <div class="container footer-grid">
       <div>
-        <span class="footer-brand">ZENOVA Labs., s.r.o.</span>
-        <p class="footer-note">
-          <span class="lang-sk">Cloud, siete a automatizácia pre moderné organizácie.</span>
-          <span class="lang-en">Cloud, networking, and automation for modern enterprises.</span>
-        </p>
+        <span class="footer-brand">ZENOVA Labs, s.r.o.</span>
+        <p class="footer-note">Cloud, siete, IoT a AI productivity pre moderné organizácie.</p>
       </div>
       <div class="footer-meta">
         <p>&copy; <span id="year"></span> ZENOVA Labs, s.r.o.</p>
         <div class="footer-social">
-          <a href="https://www.linkedin.com/company/zenova-labs" target="_blank" rel="noopener" aria-label="LinkedIn">
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4.98 3.5c0 1.38-1.12 2.5-2.5 2.5S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.24 22h4.52V7.5H.24V22zM8.34 7.5H3.86V22h4.48v-7.9c0-2.1 2.52-2.28 2.52 0V22h4.46v-8.9c0-4.72-5.35-4.54-7.44-2.22V7.5z" fill="currentColor"/></svg>
-            <span>LinkedIn</span>
-          </a>
-          <a href="https://medium.com/@pohronsky" target="_blank" rel="noopener" aria-label="Medium">
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2 6.73c0-.35.1-.69.28-.98L.29 4.03v-.5h6.36l4.92 10.79L15.9 3.53h5.38v.5l-1.45 1.39c-.13.1-.2.26-.17.43V17.4c-.03.16.04.32.17.43l1.41 1.39v.5h-7.65v-.5l1.46-1.42c.14-.14.14-.18.14-.37V8.7l-4.05 10.39h-.55L6.45 8.7v7.97c-.04.27.05.55.25.74l1.9 2.31v.5H1.14v-.5l1.9-2.31c.2-.2.29-.48.25-.75V6.73z" fill="currentColor"/></svg>
-            <span>Medium</span>
-          </a>
+          <a href="https://www.linkedin.com/company/zenova-labs" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://github.com/zenovalabs/zenova-web" target="_blank" rel="noopener">GitHub</a>
         </div>
       </div>
     </div>
   </footer>
 
-  <div class="consent-banner" id="consent-banner" role="dialog" aria-live="polite" aria-label="Cookie consent">
+  <div class="consent-banner hidden" id="consent-banner" role="dialog" aria-live="polite" aria-label="Cookie consent">
     <div class="consent-text">
-      <strong class="consent-title">
-        <span class="lang-sk">Cookies</span>
-        <span class="lang-en">Cookies</span>
-      </strong>
-      <p>
-        <span class="lang-sk">Používame cookies na zlepšenie funkcionality stránky.</span>
-        <span class="lang-en">We use cookies to improve the functionality of the site.</span>
-      </p>
+      <strong class="consent-title">Cookies</strong>
+      <p>Používame cookies iba na základné meranie návštevnosti a funkčnosti stránky.</p>
     </div>
     <div class="consent-actions">
-      <button class="btn secondary" id="consent-decline" type="button">
-        <span class="lang-sk">Odmietnuť</span>
-        <span class="lang-en">Decline</span>
-      </button>
-      <button class="btn primary" id="consent-accept" type="button">
-        <span class="lang-sk">Povoliť</span>
-        <span class="lang-en">Accept</span>
-      </button>
+      <button class="btn secondary" id="consent-decline" type="button">Odmietnuť</button>
+      <button class="btn primary" id="consent-accept" type="button">Povoliť</button>
     </div>
   </div>
 
-  <div class="lightbox hidden" id="lightbox" role="dialog" aria-modal="true" aria-label="Certificate preview">
-    <button class="lightbox-btn lightbox-close" id="lightbox-close" aria-label="Close">&times;</button>
-    <button class="lightbox-btn lightbox-prev" id="lightbox-prev" aria-label="Previous">&#10094;</button>
-    <figure class="lightbox-content">
-      <img id="lightbox-img" alt="Certificate preview" />
-      <figcaption id="lightbox-caption"></figcaption>
-    </figure>
-    <button class="lightbox-btn lightbox-next" id="lightbox-next" aria-label="Next">&#10095;</button>
-  </div>
-
-  <script src="script.js" defer></script>
+  <script src="/script.js?v=20260412" defer></script>
 </body>
 </html>
