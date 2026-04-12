@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cloud, siete, IoT a AI productivity | ZENOVA Labs</title>
-  <meta name="description" content="ZENOVA Labs navrhuje Microsoft 365, Microsoft Azure a ďalšie public cloud služby, networking, security a IoT riešenia. Praktický statický web postavený ako verejný Azure showcase projekt." />
+  <meta name="description" content="ZENOVA Labs navrhuje Microsoft 365, Microsoft Azure, networking, security a IoT riešenia. Web zároveň ukazuje end-to-end delivery flow od návrhu a implementácie až po prevádzku v Azure." />
   <link rel="canonical" href="https://www.zenova.sk/" />
   <link rel="alternate" hreflang="sk" href="https://www.zenova.sk/" />
   <link rel="alternate" hreflang="en" href="https://www.zenova.sk/en/" />
@@ -14,6 +14,10 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.zenova.sk/" />
   <meta property="og:image" content="https://www.zenova.sk/assets/zenova.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Cloud, siete, IoT a AI productivity | ZENOVA Labs" />
+  <meta name="twitter:description" content="Microsoft 365, networking, security a IoT riešenia navrhnuté tak, aby sa dali reálne prevádzkovať a rozvíjať." />
+  <meta name="twitter:image" content="https://www.zenova.sk/assets/zenova.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
@@ -30,19 +34,38 @@
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "ProfessionalService",
-      "name": "ZENOVA Labs, s.r.o.",
-      "url": "https://www.zenova.sk/",
-      "logo": "https://www.zenova.sk/assets/zenova.png",
-      "email": "info@zenova.sk",
-      "telephone": "+421910128395",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Pezinska 47",
-        "addressLocality": "Svaty Jur",
-        "postalCode": "90021",
-        "addressCountry": "SK"
-      }
+      "@graph": [
+        {
+          "@type": "ProfessionalService",
+          "@id": "https://www.zenova.sk/#organization",
+          "name": "ZENOVA Labs, s.r.o.",
+          "url": "https://www.zenova.sk/",
+          "logo": "https://www.zenova.sk/assets/zenova.png",
+          "email": "info@zenova.sk",
+          "telephone": "+421910128395",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Pezinska 47",
+            "addressLocality": "Svaty Jur",
+            "postalCode": "90021",
+            "addressCountry": "SK"
+          },
+          "sameAs": [
+            "https://www.linkedin.com/company/zenova-labs",
+            "https://github.com/zenovalabs/zenova-web"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://www.zenova.sk/#website",
+          "url": "https://www.zenova.sk/",
+          "name": "ZENOVA Labs",
+          "inLanguage": "sk",
+          "publisher": {
+            "@id": "https://www.zenova.sk/#organization"
+          }
+        }
+      ]
     }
   </script>
 </head>

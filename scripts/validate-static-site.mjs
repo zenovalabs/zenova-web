@@ -166,6 +166,7 @@ function validateLocaleMetadata(relative, route, contents, routeSet) {
   const canonicalHref = extractTagAttribute(contents, /<link\s+[^>]*rel="canonical"[^>]*>/i, "href");
   const skHref = extractTagAttribute(contents, /<link\s+[^>]*rel="alternate"[^>]*hreflang="sk"[^>]*>/i, "href");
   const enHref = extractTagAttribute(contents, /<link\s+[^>]*rel="alternate"[^>]*hreflang="en"[^>]*>/i, "href");
+  const xDefaultHref = extractTagAttribute(contents, /<link\s+[^>]*rel="alternate"[^>]*hreflang="x-default"[^>]*>/i, "href");
   const langToggleHref = extractTagAttribute(contents, /<a\s+[^>]*id="lang-toggle"[^>]*>/i, "href");
   const langToggleTargetLang = extractTagAttribute(contents, /<a\s+[^>]*id="lang-toggle"[^>]*>/i, "data-target-lang");
 
@@ -183,6 +184,10 @@ function validateLocaleMetadata(relative, route, contents, routeSet) {
 
   if (enHref !== expected.enHref) {
     errors.push(`${relative}: hreflang=en should point to ${expected.enHref}`);
+  }
+
+  if (xDefaultHref !== `${siteHost}/`) {
+    errors.push(`${relative}: hreflang=x-default should point to ${siteHost}/`);
   }
 
   if (!routeSet.has(expected.counterpartRoute)) {
@@ -304,6 +309,11 @@ async function validateHtmlMetadata() {
     expectMatch(contents, /<link\s+rel="canonical"\s+href="https:\/\/www\.zenova\.sk\/[^"]*"\s*\/?>/i, `${relative}: missing canonical link`);
     expectMatch(contents, /<link\s+rel="alternate"\s+hreflang="sk"\s+href="https:\/\/www\.zenova\.sk\/[^"]*"\s*\/?>/i, `${relative}: missing hreflang=sk link`);
     expectMatch(contents, /<link\s+rel="alternate"\s+hreflang="en"\s+href="https:\/\/www\.zenova\.sk\/[^"]*"\s*\/?>/i, `${relative}: missing hreflang=en link`);
+    expectMatch(contents, /<link\s+rel="alternate"\s+hreflang="x-default"\s+href="https:\/\/www\.zenova\.sk\/"\s*\/?>/i, `${relative}: missing hreflang=x-default link`);
+    expectMatch(contents, /<meta\s+name="twitter:card"\s+content="summary_large_image"\s*\/?>/i, `${relative}: missing twitter:card meta`);
+    expectMatch(contents, /<meta\s+name="twitter:title"\s+content="[^"]+"\s*\/?>/i, `${relative}: missing twitter:title meta`);
+    expectMatch(contents, /<meta\s+name="twitter:description"\s+content="[^"]+"\s*\/?>/i, `${relative}: missing twitter:description meta`);
+    expectMatch(contents, /<meta\s+name="twitter:image"\s+content="https:\/\/www\.zenova\.sk\/assets\/zenova\.png"\s*\/?>/i, `${relative}: missing twitter:image meta`);
     expectMatch(contents, /<link\s+rel="stylesheet"\s+href="\/styles\.css(?:\?v=[^"]+)?"\s*\/?>/i, `${relative}: missing shared stylesheet link`);
     expectMatch(contents, /<script\s+src="\/script\.js(?:\?v=[^"]+)?"\s+defer><\/script>/i, `${relative}: missing shared script include`);
 
@@ -312,6 +322,27 @@ async function validateHtmlMetadata() {
   }
 
   return htmlFiles;
+}
+
+async function validateStructuredData() {
+  const requiredJsonLdPages = [
+    "src/index.html",
+    "src/en/index.html",
+    "src/sluzby/index.html",
+    "src/en/services/index.html",
+    "src/o-nas/index.html",
+    "src/en/about/index.html",
+    "src/kontakt/index.html",
+    "src/en/contact/index.html",
+    "src/use-cases/index.html",
+    "src/en/use-cases/index.html"
+  ];
+
+  for (const relative of requiredJsonLdPages) {
+    const filePath = path.join(repoRoot, relative);
+    const contents = await readFile(filePath, "utf8");
+    expectMatch(contents, /<script\s+type="application\/ld\+json">[\s\S]+<\/script>/i, `${relative}: missing JSON-LD structured data`);
+  }
 }
 
 async function validateStaticWebAppConfig() {
@@ -379,6 +410,7 @@ async function validateRobotsAndSitemap(htmlFiles) {
 async function main() {
   await validateStaticWebAppConfig();
   const htmlFiles = await validateHtmlMetadata();
+  await validateStructuredData();
   await validateUseCaseCrossLinking(htmlFiles);
   await validateDistArtifacts();
   await validateRobotsAndSitemap(htmlFiles);
