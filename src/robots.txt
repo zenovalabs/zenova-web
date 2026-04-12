@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
+Sitemap: https://www.zenova.sk/sitemap.xml
 
 # Block bad bots
 User-agent: AhrefsBot

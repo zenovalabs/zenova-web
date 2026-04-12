@@ -1,22 +1,54 @@
 document.documentElement.classList.add('js-ready');
 
+const LANGUAGE_PREFERENCE_KEY = 'zenova_preferred_language';
+const CONSENT_CHOICE_KEY = 'zenova_consent_choice';
+
 const toggleBtn = document.getElementById('lang-toggle');
-let currentLang = document.documentElement.lang || 'sk';
-const getRequestedLang = () => {
-  // check query first
-  const queryLang = new URLSearchParams(window.location.search).get('lang');
-  if (queryLang) return queryLang;
-  // then hash fragment (supports #...&lang=sk or #...?lang=sk)
-  const hash = window.location.hash || '';
-  if (hash.includes('lang=')) {
-    const cleanHash = hash.replace(/^#/, '').replace(/^!/, '').replace(/^\?/, '');
-    const hashParams = new URLSearchParams(cleanHash);
-    const hLang = hashParams.get('lang');
-    if (hLang) return hLang;
+const headerEl = document.querySelector('.site-header');
+const navToggle = document.getElementById('nav-toggle');
+const cookieBanner = document.getElementById('consent-banner');
+const cookieAccept = document.getElementById('consent-accept');
+const cookieDecline = document.getElementById('consent-decline');
+
+const currentLang = document.documentElement.lang || 'sk';
+const pathname = window.location.pathname;
+const isRootEntry = pathname === '/' || pathname === '/index.html';
+const browserPrefersSlovak =
+  (navigator.languages || [])
+    .concat(navigator.language || [])
+    .some((value) => String(value).toLowerCase().startsWith('sk'));
+
+const getStoredLanguage = () => {
+  try {
+    return window.localStorage.getItem(LANGUAGE_PREFERENCE_KEY);
+  } catch (err) {
+    return null;
   }
-  return null;
 };
-const queryLang = getRequestedLang();
+
+const setStoredLanguage = (value) => {
+  try {
+    window.localStorage.setItem(LANGUAGE_PREFERENCE_KEY, value);
+  } catch (err) {
+    // Ignore storage failures.
+  }
+};
+
+const maybeRedirectRootLocale = () => {
+  if (!isRootEntry || currentLang !== 'sk') {
+    return;
+  }
+
+  const preferred = getStoredLanguage();
+  if (preferred === 'en') {
+    window.location.replace('/en/');
+    return;
+  }
+
+  if (!preferred && !browserPrefersSlovak) {
+    window.location.replace('/en/');
+  }
+};
 
 const applyStagger = () => {
   document.querySelectorAll('.stagger').forEach((group) => {
@@ -32,222 +64,6 @@ const applyStagger = () => {
   });
 };
 
-const hostname = window.location.hostname.toLowerCase();
-if (queryLang === 'en' || queryLang === 'sk') {
-  currentLang = queryLang;
-} else if (
-  hostname === 'zenovalabs.cloud' ||
-  hostname.endsWith('.zenovalabs.cloud') ||
-  hostname === 'zenovalabs.eu' ||
-  hostname.endsWith('.zenovalabs.eu')
-) {
-  currentLang = 'en';
-} else if (
-  hostname === 'zenova.sk' ||
-  hostname.endsWith('.zenova.sk') ||
-  hostname === 'zenovalabs.sk' ||
-  hostname.endsWith('.zenovalabs.sk')
-) {
-  currentLang = 'sk';
-}
-
-function switchLang(to) {
-  document.documentElement.lang = to;
-  if (toggleBtn) {
-    toggleBtn.textContent = to === 'sk' ? 'EN' : 'SK';
-  }
-  currentLang = to;
-  applyStagger();
-}
-
-if (toggleBtn) {
-  toggleBtn.addEventListener('click', () => {
-    switchLang(currentLang === 'sk' ? 'en' : 'sk');
-  });
-}
-
-switchLang(currentLang);
-
-const yearEl = document.getElementById('year');
-if (yearEl) {
-  yearEl.textContent = new Date().getFullYear();
-}
-
-const certGrid = document.getElementById('cert-grid');
-const lightboxEl = document.getElementById('lightbox');
-const lightboxImg = document.getElementById('lightbox-img');
-const lightboxCaption = document.getElementById('lightbox-caption');
-const lightboxPrev = document.getElementById('lightbox-prev');
-const lightboxNext = document.getElementById('lightbox-next');
-const lightboxClose = document.getElementById('lightbox-close');
-
-let certItems = [];
-let currentCertIndex = 0;
-
-const toAltText = (filename) => {
-  const match = filename.match(/Cert(\d+)/);
-  const num = match ? match[1] : filename;
-  return `ZENOVA Labs certificate ${num}`;
-};
-
-const openLightbox = (index) => {
-  if (!lightboxEl || !lightboxImg || !lightboxCaption) return;
-  currentCertIndex = index;
-  const item = certItems[index];
-  lightboxImg.src = item.src;
-  lightboxImg.alt = item.alt;
-  lightboxCaption.textContent = item.alt;
-  lightboxEl.classList.remove('hidden');
-  document.body.style.overflow = 'hidden';
-};
-
-const closeLightbox = () => {
-  if (!lightboxEl) return;
-  lightboxEl.classList.add('hidden');
-  document.body.style.overflow = '';
-};
-
-const showPrev = () => {
-  if (!certItems.length) return;
-  currentCertIndex = (currentCertIndex - 1 + certItems.length) % certItems.length;
-  openLightbox(currentCertIndex);
-};
-
-const showNext = () => {
-  if (!certItems.length) return;
-  currentCertIndex = (currentCertIndex + 1) % certItems.length;
-  openLightbox(currentCertIndex);
-};
-
-const bindLightbox = () => {
-  if (lightboxPrev) lightboxPrev.addEventListener('click', showPrev);
-  if (lightboxNext) lightboxNext.addEventListener('click', showNext);
-  if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
-  if (lightboxEl) {
-    lightboxEl.addEventListener('click', (e) => {
-      if (e.target === lightboxEl) {
-        closeLightbox();
-      }
-      if (e.target === lightboxImg) {
-        closeLightbox();
-      }
-    });
-  }
-
-  let touchStartX = null;
-  if (lightboxEl) {
-    lightboxEl.addEventListener('touchstart', (e) => {
-      touchStartX = e.touches[0].clientX;
-    });
-    lightboxEl.addEventListener('touchend', (e) => {
-      if (touchStartX === null) return;
-      const deltaX = e.changedTouches[0].clientX - touchStartX;
-      if (deltaX > 40) {
-        showPrev();
-      } else if (deltaX < -40) {
-        showNext();
-      }
-      touchStartX = null;
-    });
-  }
-
-  document.addEventListener('keydown', (e) => {
-    if (lightboxEl && lightboxEl.classList.contains('hidden')) return;
-    if (e.key === 'Escape') {
-      closeLightbox();
-    } else if (e.key === 'ArrowRight') {
-      showNext();
-    } else if (e.key === 'ArrowLeft') {
-      showPrev();
-    }
-  });
-};
-
-const renderCertGrid = () => {
-  if (!certGrid) return;
-  certGrid.innerHTML = '';
-  if (!certItems.length) {
-    const empty = document.createElement('p');
-    empty.className = 'cert-placeholder';
-    empty.innerHTML = '<span class="lang-sk">Certifikáty sa nepodarilo načítať.</span><span class="lang-en">Certificates could not be loaded.</span>';
-    certGrid.appendChild(empty);
-    return;
-  }
-  const fragment = document.createDocumentFragment();
-  certItems.forEach((item, index) => {
-    const link = document.createElement('button');
-    link.className = 'cert-thumb';
-    link.type = 'button';
-    link.setAttribute('aria-label', item.alt);
-    link.addEventListener('click', () => openLightbox(index));
-
-    const img = document.createElement('img');
-    img.loading = 'lazy';
-    img.src = item.src;
-    img.alt = item.alt;
-
-    link.appendChild(img);
-    fragment.appendChild(link);
-  });
-  certGrid.appendChild(fragment);
-};
-
-const loadCertificates = () => {
-  if (!certGrid) return;
-  const loadFromManifest = () =>
-    fetch('assets/certificates/manifest.json', { cache: 'no-cache' })
-      .then((res) => {
-        if (!res.ok) throw new Error('no manifest');
-        return res.json();
-      })
-      .then((list) => {
-        if (!Array.isArray(list)) throw new Error('invalid manifest');
-        certItems = list.map((name) => ({
-          src: `assets/certificates/${name}`,
-          alt: toAltText(name),
-        }));
-        renderCertGrid();
-      });
-
-  const fallbackSequential = () => {
-    const maxCount = 200;
-    let i = 1;
-
-    const tryLoad = () => {
-      if (i > maxCount) {
-        renderCertGrid();
-        return;
-      }
-      const pad = String(i).padStart(3, '0');
-      const src = `assets/certificates/ZENOVA-Labs-Cert${pad}.webp`;
-      const img = new Image();
-      img.onload = () => {
-        certItems.push({
-          src,
-          alt: `ZENOVA Labs certificate ${pad}`,
-        });
-        i += 1;
-        tryLoad();
-      };
-      img.onerror = () => {
-        renderCertGrid();
-      };
-      img.src = src;
-    };
-
-    tryLoad();
-  };
-
-  loadFromManifest().catch(() => {
-    fallbackSequential();
-  });
-};
-
-loadCertificates();
-bindLightbox();
-const headerEl = document.querySelector('.site-header');
-const navToggle = document.getElementById('nav-toggle');
-
 const setNavState = (isOpen) => {
   if (!headerEl || !navToggle) {
     return;
@@ -255,6 +71,15 @@ const setNavState = (isOpen) => {
   headerEl.classList.toggle('nav-open', isOpen);
   navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
 };
+
+if (toggleBtn) {
+  toggleBtn.addEventListener('click', () => {
+    const targetLang = toggleBtn.dataset.targetLang;
+    if (targetLang === 'sk' || targetLang === 'en') {
+      setStoredLanguage(targetLang);
+    }
+  });
+}
 
 if (navToggle && headerEl) {
   navToggle.addEventListener('click', () => {
@@ -295,18 +120,11 @@ window.addEventListener('resize', () => {
   }
 });
 
-updateHeaderState();
-
-const cookieBanner = document.getElementById('consent-banner');
-const cookieAccept = document.getElementById('consent-accept');
-const cookieDecline = document.getElementById('consent-decline');
-const cookieKey = 'zenova_consent_choice';
-
 const setChoiceCookie = (value) => {
   try {
-    document.cookie = `${cookieKey}=${value};path=/;max-age=${60 * 60 * 24 * 365}`;
+    document.cookie = `${CONSENT_CHOICE_KEY}=${value};path=/;max-age=${60 * 60 * 24 * 365}`;
   } catch (err) {
-    // ignore
+    // Ignore cookie errors.
   }
 };
 
@@ -314,8 +132,8 @@ const getChoiceCookie = () => {
   try {
     return document.cookie
       .split(';')
-      .map((c) => c.trim())
-      .find((c) => c.startsWith(`${cookieKey}=`))
+      .map((item) => item.trim())
+      .find((item) => item.startsWith(`${CONSENT_CHOICE_KEY}=`))
       ?.split('=')[1];
   } catch (err) {
     return null;
@@ -348,9 +166,10 @@ const updateCookieBanner = () => {
   if (!cookieBanner) {
     return;
   }
+
   cookieBanner.classList.remove('hidden');
   try {
-    const choice = window.localStorage.getItem(cookieKey) || getChoiceCookie();
+    const choice = window.localStorage.getItem(CONSENT_CHOICE_KEY) || getChoiceCookie();
     const hasChoice = Boolean(choice);
     cookieBanner.classList.toggle('hidden', hasChoice);
     if (choice) {
@@ -365,8 +184,9 @@ const setCookieChoice = (value) => {
   if (!cookieBanner) {
     return;
   }
+
   try {
-    window.localStorage.setItem(cookieKey, value);
+    window.localStorage.setItem(CONSENT_CHOICE_KEY, value);
   } catch (err) {
     // Ignore storage errors.
   }
@@ -387,4 +207,12 @@ if (cookieDecline) {
   });
 }
 
+maybeRedirectRootLocale();
+applyStagger();
+updateHeaderState();
 updateCookieBanner();
+
+const yearEl = document.getElementById('year');
+if (yearEl) {
+  yearEl.textContent = new Date().getFullYear();
+}

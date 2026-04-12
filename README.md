@@ -1,66 +1,144 @@
-# ZENOVA Labs - Cloud & Networking Platform
+# zenova.sk
 
-Official website for **ZENOVA Labs, s.r.o.** - specialists in cloud infrastructure, networking, and automation.
+Public source repository for the `zenova.sk` website and its Azure delivery model.
 
-## 🚀 About
+This repository is being shaped as both:
 
-ZENOVA Labs provides:
-- **Cloud Solutions**: Microsoft 365, cloud-native platforms
-- **Networking**: Modern network architectures and solutions
-- **Automation**: Infrastructure automation and CI/CD
-- **Consulting**: Cloud migrations and audit services
+- the production website for ZENOVA Labs
+- a public showcase project that demonstrates website architecture, SEO thinking, Azure hosting, and CI/CD structure
 
-## 📦 Tech Stack
+## What This Project Covers
 
-- **Frontend**: Vanilla JavaScript (no frameworks)
-- **Hosting**: Azure Static Web Apps
-- **Build**: Node.js with Sirv dev server
-- **Languages**: Bilingual (SK/EN)
+The target repository story is broader than a simple static site:
 
-## 🛠️ Development
+- public website implementation
+- SEO-driven content structure
+- bilingual routing model with `zenova.sk` as the canonical domain
+- Azure Static Web Apps hosting
+- Azure Static Web Apps default-domain and bilingual path strategy
+- Infrastructure as Code with Bicep
+- GitHub-based CI/CD for test and production environments
 
-This project uses a dev container for consistent development environment.
+## Service Direction
 
-### Quick Start
+The current target positioning of the website is built around three public-facing pillars:
+
+- Microsoft 365, cloud migration, and AI productivity
+- networking and security
+- IoT solutions
+
+Automation and observability are treated as cross-cutting capabilities rather than standalone top-level themes.
+
+## Public Repo Principles
+
+This repository is intentionally public.
+
+It should contain:
+
+- public architecture documentation
+- reproducible delivery patterns
+- public-facing content and assets
+- GitHub workflow and Infrastructure as Code examples
+
+It should not contain:
+
+- secrets
+- internal-only planning
+- customer-confidential details
+- environment credentials
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for working rules.
+
+## Key Documentation
+
+- [SEO rebase plan](./docs/seo-rebase-plan.md)
+- [Azure infra and CI/CD plan](./docs/azure-infra-cicd-plan.md)
+- [Azure environments and delivery model](./docs/azure-environments-delivery-model.md)
+- [Azure edge decision record](./docs/azure-edge-decision.md)
+- [Azure IaC decision record](./docs/azure-iac-decision.md)
+- [Project roadmap](./docs/project-roadmap.md)
+- [Public task backlog](./docs/public-task-backlog.md)
+- [Public issue seeds](./docs/public-issue-seeds.md)
+- [Repository operating model](./docs/repository-operating-model.md)
+- [Use case page templates](./docs/showcase/README.md)
+
+## Current Stack
+
+- Frontend: Vanilla HTML, CSS, and JavaScript
+- Hosting: Azure Static Web Apps
+- Domain strategy: SWA default domain with in-app locale routing on `/` and `/en/`
+- Build: Node.js
+- Local development: dev container compatible
+
+## Repository Workflow
+
+Recommended working model for this repo:
+
+- keep `main` production-ready
+- use short-lived branches for feature, infra, content, docs, and fixes
+- use Pull Requests for meaningful changes
+- use GitHub Issues for public work tracking
+- preserve the pre-rebase site as a baseline tag or archive branch
+
+This is part of the showcase value of the repository, not just team process.
+
+## Quick Start
 
 ```bash
-# Install dependencies
 npm ci
-
-# Start development server (http://localhost:8000)
 npm start
+```
 
-# Build for production
+Default local URL:
+
+```text
+http://localhost:8000
+```
+
+Production build:
+
+```bash
 npm run build
+npm run validate:site
+npm run validate:dist
+npm run validate:infra
+npm run validate:workflows
 ```
 
-### Dev Container
+Current CI quality gates cover:
 
-Open in:
-- [GitHub Codespaces](https://github.com/features/codespaces)
-- VS Code with [Remote Containers extension](https://code.visualstudio.com/docs/remote/containers)
+- source-level website validation for SEO and bilingual routing
+- use-case cross-linking between homepage, listings, and detail pages
+- built output link validation against generated `dist/`
+- public infra structure validation, ready for future public Bicep files
+- workflow YAML validation for the public GitHub Actions layer
 
-## 📂 Project Structure
+Delivery-ready workflow foundation now includes:
 
+- `ci-validation.yml` for build, content, infra, and workflow validation
+- `preview-pr.yml` for Azure Static Web Apps preview environments
+- `infra-whatif.yml` for safe Azure what-if checks
+- `deploy-test.yml` for the stable test environment
+- `deploy-prod.yml` for controlled production deploys
+
+## Project Structure
+
+```text
+src/                website source
+docs/               public project and architecture docs
+.github/workflows/  deployment and CI workflows
+.devcontainer/      local development container setup
 ```
-src/
-├── index.html          # Main markup
-├── script.js          # Navigation, certificates, language switching
-├── styles.css         # Responsive design
-└── assets/
-    ├── zenova.png
-    └── certificates/  # Certificate gallery
-        ├── manifest.json
-        └── ZENOVA-Labs-Cert*.webp
 
-.devcontainer/         # Dev container config
-.github/workflows/     # Azure Static Web Apps CI/CD
-```
+## Current State
 
-## 🌐 Deployment
+The repository is currently transitioning from a single-page static site into a more complete public project with:
 
-Automatically deployed to Azure Static Web Apps on push to `main` branch via GitHub Actions.
+- clearer public documentation
+- Azure infrastructure planning
+- GitHub collaboration scaffolding
+- future test and production environment separation
 
-## 📋 License
+## License
 
 © ZENOVA Labs, s.r.o.
