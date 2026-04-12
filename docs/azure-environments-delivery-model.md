@@ -144,6 +144,8 @@ Automation level:
 
 - manual `workflow_dispatch`
 - Azure deployment happens only if GitHub Environment `prod` is configured
+- `deploy-prod.yml` phase 1 bootstraps RG + SWA + enterprise-edge-ready foundation with OIDC only
+- `deploy-prod.yml` phase 2 publishes the built site after the SWA token is configured
 
 Required GitHub Environment `prod` values:
 
@@ -151,7 +153,24 @@ Required GitHub Environment `prod` values:
 - variable `AZURE_TENANT_ID`
 - variable `AZURE_SUBSCRIPTION_ID`
 - variable `AZURE_DEPLOYMENT_LOCATION`
+
+Phase 1 requires:
+
+- variable `AZURE_CLIENT_ID`
+- variable `AZURE_TENANT_ID`
+- variable `AZURE_SUBSCRIPTION_ID`
+- variable `AZURE_DEPLOYMENT_LOCATION`
+
+Phase 2 additionally requires:
+
 - secret `AZURE_STATIC_WEB_APPS_API_TOKEN`
+
+Production domain onboarding after phase 1:
+
+- attach `zenova.sk` and any `zenovalabs.*` domains to the production SWA
+- set `zenova.sk` as the default custom domain
+- let SWA redirect the remaining attached domains to `zenova.sk`
+- verify that canonical tags, sitemap URLs, and `hreflang` remain aligned with `https://www.zenova.sk/`
 
 ## Workflow and Release Hygiene
 
@@ -172,7 +191,9 @@ Release path:
 3. Let `deploy-test.yml` create the test infrastructure foundation from `main`.
 4. Add the SWA deployment token to GitHub Environment `test` and rerun `deploy-test.yml` for phase 2.
 5. Use `preview-pr.yml` for temporary UI review after the token-backed deploy path is active.
-6. Run `deploy-prod.yml` manually from `main` after the test path is acceptable.
+6. Run `deploy-prod.yml` manually from `main` to complete production phase 1 bootstrap.
+7. Add the production SWA deployment token to GitHub Environment `prod` and rerun `deploy-prod.yml` for phase 2.
+8. Attach production custom domains, set `zenova.sk` as the default domain, and verify redirect consolidation from `zenovalabs.*`.
 
 Hygiene rules:
 

@@ -120,14 +120,19 @@ Delivery-ready workflow foundation now includes:
 - `preview-pr.yml` for Azure Static Web Apps preview environments
 - `infra-whatif.yml` for safe Azure what-if checks
 - `deploy-test.yml` for a staged test bootstrap and stable test environment
-- `deploy-prod.yml` for controlled production deploys
+- `deploy-prod.yml` for staged production bootstrap and controlled production deploys
 
 Current bootstrap story:
 
 - phase 1 creates or reconciles the resource group and Static Web App foundation
 - phase 1 does not require `AZURE_STATIC_WEB_APPS_API_TOKEN`
 - phase 2 publishes `dist/` into the existing Static Web App after the token is added
+- the same staged pattern applies to both `test` and `prod`
 - PR previews become deploy-capable after phase 2 has completed at least once
+- production domain onboarding is intentionally separate from the first infra bootstrap:
+  - attach `zenova.sk` and `zenovalabs.*` as SWA custom domains
+  - set `zenova.sk` as the default domain
+  - let SWA redirect the remaining domains to that canonical host
 
 ## Project Structure
 
