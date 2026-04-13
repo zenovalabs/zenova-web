@@ -514,7 +514,8 @@ Kazde prostredie:
 - vlastne `AZURE_CLIENT_ID`
 - `AZURE_TENANT_ID`
 - `AZURE_SUBSCRIPTION_ID`
-- pripadne resource names, ak ich nebudes davat do workflow variables
+- `AZURE_DEPLOYMENT_LOCATION`
+- SWA deployment token az po phase 1 ako `AZURE_STATIC_WEB_APPS_API_TOKEN`
 
 Odporucanie:
 
@@ -522,6 +523,78 @@ Odporucanie:
 - pre Azure login pouzit OIDC a federated credentials
 - SWA deployment token moze ostat ako prechodne riesenie pre app deploy, ale dlhodobo je lepsie smerovat k menej manualnemu setupu
 - pre `prod` aj `test` ma byt token potrebny az v phase 2, nie pri infra bootstrape
+
+### OIDC a federated credentials
+
+Pre `test` aj `prod` treba mimo repozitara vytvorit samostatny federated credential v Microsoft Entra ID.
+
+`test` credential:
+
+- repository: `zenovalabs/zenova-web`
+- environment: `test`
+- subject: `repo:zenovalabs/zenova-web:environment:test`
+- issuer: `https://token.actions.githubusercontent.com`
+- audience: `api://AzureADTokenExchange`
+
+`prod` credential:
+
+- repository: `zenovalabs/zenova-web`
+- environment: `prod`
+- subject: `repo:zenovalabs/zenova-web:environment:prod`
+- issuer: `https://token.actions.githubusercontent.com`
+- audience: `api://AzureADTokenExchange`
+
+Prakticky dopad:
+
+- credential pre `test` nepokryje `prod`
+- credential pre `prod` nepokryje `test`
+- ak subject nesedi presne, Azure login zlyha este pred phase 1 bootstrapom
+
+### RBAC mimo Bicep
+
+Service principal pouzity v GitHub Actions musi mat priradeny pristup na Azure scope, proti ktoremu sa deployment spusta.
+
+Minimalny operacny model:
+
+- subscription-level alebo environment-specific scope
+- dostatocna rola na vytvorenie resource group a Static Web App
+
+Bez tohto kroku:
+
+- OIDC login sa moze podarit
+- ale deployment nenajde subscription alebo nebude mat prava na zapis
+
+### SWA token bootstrap mimo workflowov
+
+`AZURE_STATIC_WEB_APPS_API_TOKEN` nevznika z Bicep deploymentu automaticky v GitHube.
+
+Spravny flow:
+
+1. spustit phase 1 bootstrap
+2. pockat, kym SWA resource realne existuje
+3. ziskat deployment token zo SWA:
+   - cez Azure Portal
+   - alebo cez `az staticwebapp secrets list`
+4. ulozit token do GitHub Environment secretu
+5. rerunut workflow pre phase 2
+
+Toto plati rovnako pre `test` aj `prod`.
+
+### Produkcne domeny a redirecty mimo Bicep
+
+Aktualna public foundation v repozitari neriesi automaticky:
+
+- pripojenie custom domains do SWA
+- DNS validaciu domen
+- nastavenie default domain
+- redirect ostatnych domen na default domain
+
+Pre produkciu treba po phase 1 a phase 2 spravit este:
+
+1. pripojit `zenova.sk` a `zenovalabs.*` do produkcnej SWA
+2. nastavit `zenova.sk` ako default domain
+3. nechat SWA presmerovat ostatne custom domains na `zenova.sk`
+4. overit canonical, sitemap, `hreflang` a hlavne URL po produkcnom switchi
 
 ## Build prostredie
 

@@ -119,6 +119,34 @@ Phase 2 additionally requires:
 
 - secret `AZURE_STATIC_WEB_APPS_API_TOKEN`
 
+Manual onboarding outside Bicep and GitHub Actions:
+
+- create GitHub Environment `test`
+- add GitHub Environment variables:
+  - `AZURE_CLIENT_ID`
+  - `AZURE_TENANT_ID`
+  - `AZURE_SUBSCRIPTION_ID`
+  - `AZURE_DEPLOYMENT_LOCATION`
+- create a federated credential in Microsoft Entra ID for:
+  - repository: `zenovalabs/zenova-web`
+  - environment: `test`
+  - subject: `repo:zenovalabs/zenova-web:environment:test`
+  - issuer: `https://token.actions.githubusercontent.com`
+  - audience: `api://AzureADTokenExchange`
+- grant the deployment app service principal access to the Azure subscription or target scope used for `test`
+- run `deploy-test.yml` phase 1 to create the SWA
+- retrieve the SWA deployment token after phase 1:
+  - Azure Portal: `Manage deployment token`
+  - or Azure CLI: `az staticwebapp secrets list --name <swa-name> --query properties.apiKey -o tsv`
+- store that value as GitHub Environment secret `AZURE_STATIC_WEB_APPS_API_TOKEN`
+- rerun `deploy-test.yml` for phase 2
+
+Operational note:
+
+- test does not require custom domains for the first working iteration
+- the Azure-managed SWA hostname is the expected stable non-production URL
+- PR preview deploys remain inactive until the token-backed test phase 2 path has succeeded at least once
+
 ## 4. Production
 
 Purpose:
@@ -172,6 +200,44 @@ Production domain onboarding after phase 1:
 - let SWA redirect the remaining attached domains to `zenova.sk`
 - verify that canonical tags, sitemap URLs, and `hreflang` remain aligned with `https://www.zenova.sk/`
 
+Manual onboarding outside Bicep and GitHub Actions:
+
+- create GitHub Environment `prod`
+- add GitHub Environment variables:
+  - `AZURE_CLIENT_ID`
+  - `AZURE_TENANT_ID`
+  - `AZURE_SUBSCRIPTION_ID`
+  - `AZURE_DEPLOYMENT_LOCATION`
+- create a federated credential in Microsoft Entra ID for:
+  - repository: `zenovalabs/zenova-web`
+  - environment: `prod`
+  - subject: `repo:zenovalabs/zenova-web:environment:prod`
+  - issuer: `https://token.actions.githubusercontent.com`
+  - audience: `api://AzureADTokenExchange`
+- grant the deployment app service principal access to the Azure subscription or target scope used for `prod`
+- run `deploy-prod.yml` phase 1 to create the production SWA foundation
+- retrieve the SWA deployment token after phase 1:
+  - Azure Portal: `Manage deployment token`
+  - or Azure CLI: `az staticwebapp secrets list --name <swa-name> --query properties.apiKey -o tsv`
+- store that value as GitHub Environment secret `AZURE_STATIC_WEB_APPS_API_TOKEN`
+- rerun `deploy-prod.yml` for phase 2
+- attach the production custom domains in SWA
+- set `zenova.sk` as the default domain
+- let SWA redirect the remaining attached domains to `zenova.sk`
+- verify live behavior on:
+  - homepage
+  - `/en/`
+  - `robots.txt`
+  - `sitemap.xml`
+  - one Slovak reference page
+  - one English reference page
+
+Operational note:
+
+- production custom domains are not created by the current public Bicep foundation
+- domain validation, DNS records, and default-domain selection remain an operational step outside the repository
+- the intended production model is domain consolidation to `zenova.sk`, not host-based language routing
+
 ## Workflow and Release Hygiene
 
 The public workflow set is intentionally small and explicit:
@@ -221,7 +287,9 @@ Manual outside repo:
 - GitHub Environment creation
 - OIDC federation setup in Azure
 - Azure subscription and tenant wiring
+- Azure RBAC assignment for the deployment app identity
 - SWA deployment token creation after phase 1 has created the app
+- approval of protected GitHub environments when required
 - final custom-domain onboarding and verification
 
 ## Public-Safe Delivery Story
